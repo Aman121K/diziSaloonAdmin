@@ -1,18 +1,24 @@
-import 'react-app-polyfill/ie11';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import "react-app-polyfill/ie11";
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { Route, Switch } from "react-router-dom";
+import Login from "./pages/Login";
+
 //import * as serviceWorker from './serviceWorker';
-import { HashRouter } from 'react-router-dom'
-import ScrollToTop from './ScrollToTop';
+import { HashRouter } from "react-router-dom";
+import ScrollToTop from "./ScrollToTop";
 
 ReactDOM.render(
     <HashRouter>
-        <ScrollToTop>
-            <App></App>
-        </ScrollToTop>
+        <Switch>
+            <Route path="/" exact={true} component={Login} />
+            <ScrollToTop>
+                <App></App>
+            </ScrollToTop>
+        </Switch>
     </HashRouter>,
-    document.getElementById('root')
+    document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
