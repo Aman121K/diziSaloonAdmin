@@ -16,3 +16,10 @@ export const authenticate = (res, next) => {
         next();
     }
 };
+
+export const logout = (next) => {
+    if (typeof window !== "undefined") {
+        localStorage.clear();
+        next();
+    }
+};
