@@ -3,7 +3,7 @@ export default class Constants {
     static END_POINT = {
         SIGIN: "api/admin/login",
 
-        GET_ALL_USERS: "api/admin/allusers",
+        GET_ALL_CATEGORIES: "api/admin/categories",
         USER: "api/admin/user/",
 
         FOUNDATION: "api/foundation/",
