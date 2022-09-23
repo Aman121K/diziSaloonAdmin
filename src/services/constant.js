@@ -9,8 +9,8 @@ export default class Constants {
         FOUNDATION: "api/foundation/",
 
         GET_CATEGORY: "api/admin/category/",
-        CREATE_CATEGORY: "api/admin/createItemCategory",
-        UPDATE_CATEGORY: "api/admin/updatecategory/",
+        CREATE_CATEGORY: "api/admin/create-category",
+        UPDATE_CATEGORY: "api/admin/update-category",
 
         SUB_CATEGORY: "api/admin/subcategory/",
 

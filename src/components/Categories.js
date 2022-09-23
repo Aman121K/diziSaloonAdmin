@@ -7,21 +7,31 @@ import Constants from "../services/constant";
 import list from "../assets/demo/flags/list.png";
 import { Button } from "primereact/button";
 import CreateCategory from "../modals/CreateCategory";
+import EditCategory from "../modals/EditCategory";
 
 const Categories = () => {
     useEffect(() => {
+        getAllCategory();
+    }, []);
+
+    const getAllCategory = () => {
         getData(Constants.END_POINT.GET_ALL_CATEGORIES)
             .then((res) => {
                 setCategory(res.data);
-                console.log("res::", res);
             })
             .catch((err) => console.log(err));
-    }, []);
+    };
 
     const [category, setCategory] = useState(null);
     const [openModal, setOpenModal] = useState(false);
+    const [editModal, setEditModal] = useState(null);
+    const [data, setData] = useState();
+    const handleEdit = (rowData) => {
+        console.log("rowDataee:ee:", rowData);
+        setEditModal(rowData?._id);
+        setData(rowData);
+    };
 
-    console.log("category::", category);
     const template2 = {
         layout: "RowsPerPageDropdown CurrentPageReport PrevPageLink NextPageLink",
         RowsPerPageDropdown: (options) => {
@@ -49,19 +59,18 @@ const Categories = () => {
         },
     };
     const imageBodyTemplate = (rowData) => {
-        console.log("rowData::", Constants.BASE_URL + rowData.categoryImage);
         return <img src={rowData.categoryImage ? Constants.BASE_URL + rowData.categoryImage : list} alt={rowData.categoryImage} width={50} />;
     };
     const actionTemplate = (rowData) => {
         return (
             <div className="">
-                <Button type="button" icon="pi pi-pencil" className="p-button-warning font-bold text-white m-2 px-5 py-3 border-round" style={{ textAlign: "center", width: "6rem", marginRight: "10px" }}></Button>
+                <Button type="button" icon="pi pi-pencil" className="p-button-warning " style={{ textAlign: "center", width: "6rem", marginRight: "10px" }} onClick={() => handleEdit(rowData)}></Button>
                 {rowData?.isActive ? (
-                    <Button type="button" className="p-button-danger font-bold text-white m-2 px-5 py-3 border-round">
+                    <Button type="button" className="p-button-danger ">
                         Disable
                     </Button>
                 ) : (
-                    <Button type="button" className="p-button-success font-bold text-white m-2 px-5 py-3 border-round">
+                    <Button type="button" className="p-button-success ">
                         Enable
                     </Button>
                 )}
@@ -84,7 +93,8 @@ const Categories = () => {
                             <Column header="Image" body={imageBodyTemplate} style={{ width: "35%" }} />
                             <Column header="Action" body={actionTemplate} style={{ width: "25%" }} />
                         </DataTable>
-                        <CreateCategory openModal={openModal} setOpenModal={setOpenModal} />
+                        {openModal && <CreateCategory openModal={openModal} setOpenModal={setOpenModal} getAllCategory={getAllCategory} />}
+                        {editModal && <EditCategory editModal={editModal} setEditModal={setEditModal} getAllCategory={getAllCategory} category={data} />}
                     </div>
                 </div>
             </div>
