@@ -111,9 +111,9 @@ const Dashboard = (props) => {
         }
     }, [props.colorMode]);
 
-    const formatCurrency = (value) => {
-        return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
-    };
+    // const formatCurrency = (value) => {
+    //     return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
+    // };
 
     return (
         <div className="grid">
