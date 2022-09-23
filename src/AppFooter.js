@@ -5,7 +5,10 @@ export const AppFooter = (props) => {
         <div className="layout-footer">
             <img src={props.layoutColorMode === "light" ? "assets/layout/images/squareLogo.png" : "assets/layout/images/squareLogo.png"} alt="Logo" height="20" className="mr-2" />
 
-            <span className="font-medium">Instajamaica</span>
+            <span className="font-medium">
+                {" "}
+                INSTA<span style={{ color: "#ffdb4d" }}>JAMAICA</span>
+            </span>
         </div>
     );
 };

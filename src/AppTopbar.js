@@ -34,7 +34,10 @@ export const AppTopbar = (props) => {
             </button>
             <Link to="/" className="layout-topbar-logo ml-3">
                 <img src={props.layoutColorMode === "light" ? "assets/layout/images/squareLogo.png" : "assets/layout/images/squareLogo.png"} alt="logo" />
-                <span>INSTAJAMAICA</span>
+                <span>
+                    {" "}
+                    INSTA<span style={{ color: "#ffdb4d" }}>JAMAICA</span>
+                </span>
             </Link>
 
             <ul className={classNames("layout-topbar-menu lg:flex origin-top", { "layout-topbar-menu-mobile-active": props.mobileTopbarMenuActive })}>
@@ -53,7 +56,7 @@ export const AppTopbar = (props) => {
                 <li>
                     <button className="p-link layout-topbar-button" onClick={confirm}>
                         <i className="pi pi-power-off" />
-                        <span>Profile</span>
+                        <span>Logout</span>
                     </button>
                 </li>
             </ul>

@@ -163,6 +163,7 @@ const App = () => {
                     to: "/dashboard",
                 },
                 { label: "Categories", icon: "pi pi-fw pi-book", to: "/categories" },
+                { label: "User/Provider", icon: "pi pi-fw pi-table", to: "/table" },
             ],
         },
         // {
