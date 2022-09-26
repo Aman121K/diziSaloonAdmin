@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Button } from "primereact/button";
@@ -9,8 +9,15 @@ import { useHistory } from "react-router-dom";
 import { Messages } from "primereact/messages";
 
 const Login = () => {
+    useEffect(() => {
+        document.documentElement.style.fontSize = 14 + "px";
+        if (isAuthenticated()) {
+            history.push("/dashboard");
+        }
+    }, []);
     const [form, setForm] = useState();
     const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
     const history = useHistory();
     const message = useRef();
 
@@ -31,8 +38,13 @@ const Login = () => {
     };
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!form.email || !form.password) {
+            return;
+        }
+        setLoading(true);
         postData(Constants.END_POINT.SIGIN, form)
             .then((res) => {
+                setLoading(false);
                 if (res.success) {
                     console.log(res);
                     authenticate(res, () => {
@@ -48,6 +60,7 @@ const Login = () => {
                 }
             })
             .catch((error) => {
+                setLoading(false);
                 console.log(error);
             });
     };
@@ -55,9 +68,15 @@ const Login = () => {
     return (
         <React.Fragment>
             <div className="grid mt-5">
-                <div className="col-11 md:col-6 mx-auto mt-5">
-                    <div className="card p-fluid mt-5">
-                        <h2 className="text-center">Login</h2>
+                <div className="col-11 md:col-6 mx-auto">
+                    <div className="card p-fluid">
+                        <div className="text-center">
+                            <img src="assets/layout/images/squareLogo.png" alt="logo" width="15%" />
+                            <h2>
+                                INSTA<span style={{ color: "#ffdb4d" }}>JAMAICA</span>
+                            </h2>
+                        </div>
+                        <h3>Admin Login</h3>
                         <Messages ref={message} />
                         <div className="field">
                             <label htmlFor="email">Email</label>
@@ -69,7 +88,7 @@ const Login = () => {
                                 }}
                             />
                         </div>
-                        <div className="field">
+                        <div className="field mb-4">
                             <label htmlFor="password">Password</label>
                             <Password
                                 onChange={(e) => {
@@ -80,7 +99,7 @@ const Login = () => {
                             />
                         </div>
 
-                        <Button onClick={handleSubmit} label="Login"></Button>
+                        {loading ? <Button label="Login..."></Button> : <Button onClick={handleSubmit} label="Login"></Button>}
                     </div>
                 </div>
             </div>

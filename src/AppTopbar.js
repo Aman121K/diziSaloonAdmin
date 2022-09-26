@@ -1,8 +1,29 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
+import { confirmPopup } from "primereact/confirmpopup";
+import { useHistory } from "react-router-dom";
+import { logout } from "./services/auth";
 
 export const AppTopbar = (props) => {
+    const history = useHistory();
+    const confirm = (event) => {
+        confirmPopup({
+            target: event.currentTarget,
+            message: "Are you sure you want to Logout?",
+            icon: "pi pi-exclamation-triangle",
+            accept,
+            reject,
+        });
+    };
+    const accept = () => {
+        logout(() => {
+            setTimeout(() => {
+                history.push("/");
+            }, 400);
+        });
+    };
+    const reject = () => {};
     return (
         <div className="layout-topbar">
             <button type="button" className="p-link  layout-menu-button layout-topbar-button" onClick={props.onToggleMenuClick}>
@@ -11,9 +32,12 @@ export const AppTopbar = (props) => {
             <button type="button" className="p-link layout-topbar-menu-button layout-topbar-button" onClick={props.onMobileTopbarMenuClick}>
                 <i className="pi pi-ellipsis-v" />
             </button>
-            <Link to="/" className="layout-topbar-logo">
-                {/* <img src={props.layoutColorMode === "light" ? "assets/layout/images/logo-dark.svg" : "assets/layout/images/logo-white.svg"} alt="logo" /> */}
-                <span>INSTAJAMAICA</span>
+            <Link to="/" className="layout-topbar-logo ml-3">
+                <img src={props.layoutColorMode === "light" ? "assets/layout/images/squareLogo.png" : "assets/layout/images/squareLogo.png"} alt="logo" />
+                <span>
+                    {" "}
+                    INSTA<span style={{ color: "#ffdb4d" }}>JAMAICA</span>
+                </span>
             </Link>
 
             <ul className={classNames("layout-topbar-menu lg:flex origin-top", { "layout-topbar-menu-mobile-active": props.mobileTopbarMenuActive })}>
@@ -30,9 +54,9 @@ export const AppTopbar = (props) => {
                     </button>
                 </li>
                 <li>
-                    <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
-                        <i className="pi pi-user" />
-                        <span>Profile</span>
+                    <button className="p-link layout-topbar-button" onClick={confirm}>
+                        <i className="pi pi-power-off" />
+                        <span>Logout</span>
                     </button>
                 </li>
             </ul>

@@ -1,9 +1,10 @@
 export default class Constants {
-    static BASE_URL = "http://144.91.80.25:1001/";
+    static BASE_URL = "https://instajamaica-api.appdeft.biz/";
     static END_POINT = {
         SIGIN: "api/admin/login",
 
         GET_ALL_CATEGORIES: "api/admin/categories",
+        ENABLE_DISABLE_CATEGORY: "api/admin/enable-disable-category",
         USER: "api/admin/user/",
 
         FOUNDATION: "api/foundation/",

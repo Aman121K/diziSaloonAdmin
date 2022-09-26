@@ -155,16 +155,19 @@ const App = () => {
 
     const menu = [
         {
+            label: "Home",
             items: [
                 {
                     label: "Dashboard",
                     icon: "pi pi-fw pi-home",
                     to: "/dashboard",
                 },
-                { label: "Categories", icon: "pi pi-fw pi-list", to: "/categories" },
+                { label: "Categories", icon: "pi pi-fw pi-book", to: "/categories" },
+                { label: "User/Provider", icon: "pi pi-fw pi-table", to: "/table" },
             ],
         },
         // {
+        //     label: "UI Components",
         //     icon: "pi pi-fw pi-sitemap",
         //     items: [
         //         { label: "Form Layout", icon: "pi pi-fw pi-id-card", to: "/formlayout" },

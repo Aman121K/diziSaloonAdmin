@@ -21,6 +21,9 @@ const EditCategory = ({ editModal, setEditModal, category, getAllCategory }) => 
     };
     const handleSave = (e) => {
         e.preventDefault();
+        if (!form.categoryName || !form.categoryImage) {
+            return;
+        }
         const formData = new FormData();
         formData.append("categoryName", form.categoryName);
         formData.append("categoryImage", form.categoryImage);
