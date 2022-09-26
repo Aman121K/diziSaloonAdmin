@@ -27,9 +27,15 @@ const Categories = () => {
     const [editModal, setEditModal] = useState(null);
     const [data, setData] = useState();
     const handleEdit = (rowData) => {
-        console.log("rowDataee:ee:", rowData);
         setEditModal(rowData?._id);
         setData(rowData);
+    };
+    const handleDisable = (id) => {
+        getData(Constants.END_POINT.ENABLE_DISABLE_CATEGORY + id)
+            .then((res) => {
+                getAllCategory();
+            })
+            .catch((err) => console.log(err));
     };
 
     const template2 = {
@@ -66,11 +72,11 @@ const Categories = () => {
             <div className="">
                 <Button type="button" icon="pi pi-pencil" className="p-button-warning " style={{ textAlign: "center", width: "6rem", marginRight: "10px" }} onClick={() => handleEdit(rowData)}></Button>
                 {rowData?.isActive ? (
-                    <Button type="button" className="p-button-danger ">
+                    <Button type="button" className="p-button-danger" onClick={() => handleDisable(rowData._id)}>
                         Disable
                     </Button>
                 ) : (
-                    <Button type="button" className="p-button-success ">
+                    <Button type="button" className="p-button-success " onClick={() => handleDisable(rowData._id)}>
                         Enable
                     </Button>
                 )}

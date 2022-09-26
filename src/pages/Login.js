@@ -29,7 +29,6 @@ const Login = () => {
     const addErrorMessage = (msg) => {
         message.current.show({ severity: "error", content: msg });
     };
-    console.log("form::", form);
     const handleSubmit = (e) => {
         e.preventDefault();
         postData(Constants.END_POINT.SIGIN, form)

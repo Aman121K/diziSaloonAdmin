@@ -13,8 +13,6 @@ const EditCategory = ({ editModal, setEditModal, category, getAllCategory }) => 
     });
     const [img, setImg] = useState();
 
-    console.log("editModal", Constants.END_POINT.UPDATE_CATEGORY);
-
     const handleFields = (field, value) => {
         setForm((prevState) => ({
             ...prevState,
@@ -26,7 +24,7 @@ const EditCategory = ({ editModal, setEditModal, category, getAllCategory }) => 
         const formData = new FormData();
         formData.append("categoryName", form.categoryName);
         formData.append("categoryImage", form.categoryImage);
-        putData1(Constants.END_POINT.UPDATE_CATEGORY + "/" + category?._id, formData)
+        putData1(Constants.END_POINT.UPDATE_CATEGORY + category?._id, formData)
             .then((res) => {
                 getAllCategory();
                 setEditModal(null);
@@ -53,19 +51,9 @@ const EditCategory = ({ editModal, setEditModal, category, getAllCategory }) => 
                     <label htmlFor="uploadimg">
                         <img src={upload} alt="" width="50px" height="50px"></img>
                     </label>
-                    <input
-                        id="uploadimg"
-                        type="file"
-                        accept="image/*"
-                        placeholder="Blog Image "
-                        hidden
-                        onChange={(e) => {
-                            handleFiles(e);
-                        }}
-                        style={{ color: "#0a083b", marginTop: "20px" }}
-                    />
+                    <input id="uploadimg" type="file" accept="image/*" placeholder="Blog Image " hidden onChange={(e) => handleFiles(e)} style={{ color: "#0a083b", marginTop: "20px" }} />
 
-                    <p>{form?.categoryImage}</p>
+                    <img src={img ? img : Constants.BASE_URL + form?.categoryImage} alt="" width="100px" height="85px" />
                 </span>
                 <span className="p-label"></span>
             </div>
