@@ -4,15 +4,14 @@ export default class Constants {
         SIGIN: "api/admin/login",
 
         GET_ALL_CATEGORIES: "api/admin/categories",
-        ENABLE_DISABLE_CATEGORY: "api/admin/enable-disable-category",
-        USER: "api/admin/user/",
+        ENABLE_DISABLE_CATEGORY: "api/admin/enable-disable-category/",
+        USERS: "api/admin/users",
 
         FOUNDATION: "api/foundation/",
 
         GET_CATEGORY: "api/admin/category/",
         CREATE_CATEGORY: "api/admin/create-category",
         UPDATE_CATEGORY: "api/admin/update-category/",
-        ENABLE_DISABLE_CATEGORY: "api/admin/enable-disable-category/",
 
         SUB_CATEGORY: "api/admin/subcategory/",
 

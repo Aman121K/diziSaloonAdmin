@@ -99,7 +99,7 @@ const Login = () => {
                             />
                         </div>
 
-                        {loading ? <Button label="Login..."></Button> : <Button onClick={handleSubmit} label="Login"></Button>}
+                        {loading ? <Button label="Login..."></Button> : <Button type="submit" onClick={handleSubmit} label="Login"></Button>}
                     </div>
                 </div>
             </div>

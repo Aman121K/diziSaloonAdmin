@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Dropdown } from "primereact/dropdown";
+import { Skeleton } from "primereact/skeleton";
 import { getData } from "../services/http.service";
 import Constants from "../services/constant";
 import list from "../assets/demo/flags/list.png";
 import { Button } from "primereact/button";
-import CreateCategory from "../modals/CreateCategory";
-import EditCategory from "../modals/EditCategory";
+import CreateAndEditCategory from "../modals/CreateAndEditCategory";
 
 const Categories = () => {
     useEffect(() => {
@@ -23,48 +22,23 @@ const Categories = () => {
     };
 
     const [category, setCategory] = useState(null);
-    const [openModal, setOpenModal] = useState(false);
-    const [editModal, setEditModal] = useState(null);
+    const [openModal, setOpenModal] = useState(null);
+    const [id, setId] = useState(null);
     const [data, setData] = useState();
 
     const handleEdit = (rowData) => {
-        setEditModal(rowData?._id);
+        setOpenModal(true);
+        setId(rowData?._id);
         setData(rowData);
     };
     const enableDisable = (id) => {
-        getData(Constants.END_POINT.ENABLE_DISABLE_CATEGORY + "/" + id)
+        getData(Constants.END_POINT.ENABLE_DISABLE_CATEGORY + id)
             .then((res) => {
                 getAllCategory();
             })
             .catch((err) => console.log(err));
     };
 
-    const template2 = {
-        layout: "RowsPerPageDropdown CurrentPageReport PrevPageLink NextPageLink",
-        RowsPerPageDropdown: (options) => {
-            const dropdownOptions = [
-                { label: 10, value: 10 },
-                { label: 20, value: 20 },
-                { label: 50, value: 50 },
-            ];
-
-            return (
-                <React.Fragment>
-                    <span className="mx-1" style={{ color: "var(--text-color)", userSelect: "none" }}>
-                        Items per page:{" "}
-                    </span>
-                    <Dropdown value={options.value} options={dropdownOptions} onChange={options.onChange} />
-                </React.Fragment>
-            );
-        },
-        CurrentPageReport: (options) => {
-            return (
-                <span style={{ color: "var(--text-color)", userSelect: "none", width: "120px", textAlign: "center" }}>
-                    {options.first} - {options.last} of {options.totalRecords}
-                </span>
-            );
-        },
-    };
     const imageBodyTemplate = (rowData) => {
         return <img src={rowData.categoryImage ? Constants.BASE_URL + rowData.categoryImage : list} alt={rowData.categoryImage} width={50} />;
     };
@@ -95,13 +69,12 @@ const Categories = () => {
                             <Button icon="pi pi-plus" label="Create Category" onClick={() => setOpenModal(true)} />
                         </div>
 
-                        <DataTable value={category} responsiveLayout="scroll">
+                        <DataTable value={category} responsiveLayout="scroll" paginator rows={5}>
                             <Column field="categoryName" header="Name" style={{ width: "35%" }}></Column>
                             <Column header="Image" body={imageBodyTemplate} style={{ width: "35%" }} />
                             <Column header="Action" body={actionTemplate} style={{ width: "25%" }} />
                         </DataTable>
-                        {openModal && <CreateCategory openModal={openModal} setOpenModal={setOpenModal} getAllCategory={getAllCategory} />}
-                        {editModal && <EditCategory editModal={editModal} setEditModal={setEditModal} getAllCategory={getAllCategory} category={data} />}
+                        {openModal && <CreateAndEditCategory openModal={openModal} setOpenModal={setOpenModal} getAllCategory={getAllCategory} category={data} id={id} setId={setId} />}
                     </div>
                 </div>
             </div>
