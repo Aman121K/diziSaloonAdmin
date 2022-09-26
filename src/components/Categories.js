@@ -28,7 +28,6 @@ const Categories = () => {
     const [data, setData] = useState();
 
     const handleEdit = (rowData) => {
-        console.log("rowDataee:ee:", rowData);
         setEditModal(rowData?._id);
         setData(rowData);
     };

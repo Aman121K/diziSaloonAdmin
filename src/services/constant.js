@@ -11,7 +11,8 @@ export default class Constants {
 
         GET_CATEGORY: "api/admin/category/",
         CREATE_CATEGORY: "api/admin/create-category",
-        UPDATE_CATEGORY: "api/admin/update-category",
+        UPDATE_CATEGORY: "api/admin/update-category/",
+        ENABLE_DISABLE_CATEGORY: "api/admin/enable-disable-category/",
 
         SUB_CATEGORY: "api/admin/subcategory/",
 
