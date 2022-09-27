@@ -4,7 +4,7 @@ import { Messages } from "primereact/messages";
 import { Button } from "primereact/button";
 import profile from "../assets/demo/flags/profile.png";
 import Constants from "../services/constant";
-import { getData, putData } from "../services/http.service";
+import { getData, putData ,postData} from "../services/http.service";
 import { InputText } from "primereact/inputtext";
 const Profile = () => {
     const [info, setInfo] = useState({
@@ -40,7 +40,7 @@ const Profile = () => {
         if (img) {
             formdata.append("adminImage", img);
         }
-        putData(Constants.END_POINT.UPDATE_ADMIN_PROFILE)
+        putData(Constants.END_POINT.UPDATE_ADMIN_PROFILE,formdata)
             .then((res) => {
                 console.log("res::", res);
                 if (res.success) {
@@ -51,6 +51,11 @@ const Profile = () => {
                 console.log(err);
             });
     };
+
+    const updatePassword =()=>{
+        postData(Constants.END_POINT.CHANGE_PASSWORD,{password:info.password,newPassword:info.newPassword}).then((res)=>console.log(res)).catch((err)=>console.log(err))
+        
+    }
 
     const message = useRef();
     return (
@@ -109,25 +114,27 @@ const Profile = () => {
                             <label htmlFor="password">Old password</label>
                             <Password
                                 onChange={(e) => {
-                                    // setField("password", e.target.value);
+                                    setInfo({ ...info, password:e.target.value });
                                 }}
+                                // value={info.password}
                                 toggleMask
                                 feedback={false}
                             />
                         </div>
                         <div className="field   col-6">
-                            <label htmlFor="password"> New Password</label>
+                            <label htmlFor="newPassword"> New Password</label>
                             <Password
                                 onChange={(e) => {
-                                    // setField("password", e.target.value);
+                                   setInfo({...info,newPassword:e.target.value})
                                 }}
                                 toggleMask
+                                // value={info.newPassword}
                                 feedback={false}
                             />
                         </div>
                     </div>
 
-                    {info?.loading ? <Button label="Updating Password..."></Button> : <Button className="p-button-info p-button-outlined" type="submit" label="Change Password"></Button>}
+                    {info?.loading ? <Button label="Updating Password..."></Button> : <Button className="p-button-info p-button-outlined" type="submit" label="Change Password" onClick={updatePassword}></Button>}
                 </div>
             </div>
         </div>

@@ -9,6 +9,7 @@ export default class Constants {
         BLOCK_UNBLOCK_USER: "api/admin/enable-disable-user/",
         GET_ADMIN_PROFILE: "api/admin/profile",
         UPDATE_ADMIN_PROFILE: "api/admin/update",
+        CHANGE_PASSWORD:"api/admin/change-password",
 
         FOUNDATION: "api/foundation/",
 
