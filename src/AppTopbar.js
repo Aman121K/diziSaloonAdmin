@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import { confirmPopup } from "primereact/confirmpopup";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { logout } from "./services/auth";
+import { Menu } from "primereact/menu";
 
 export const AppTopbar = (props) => {
     const history = useHistory();
+    const location = useLocation();
+    const menu = useRef(null);
     const confirm = (event) => {
         confirmPopup({
             target: event.currentTarget,
@@ -16,6 +19,7 @@ export const AppTopbar = (props) => {
             reject,
         });
     };
+    console.log("window::", window.location);
     const accept = () => {
         logout(() => {
             setTimeout(() => {
@@ -24,6 +28,30 @@ export const AppTopbar = (props) => {
         });
     };
     const reject = () => {};
+
+    const toggleMenu = (event) => {
+        menu.current.toggle(event);
+    };
+    const navigateToPage = (path) => {
+        console.log("Navigate to path " + path);
+        history.push(path);
+    };
+    const overlayMenuItems = [
+        {
+            label: "Profile",
+            icon: "pi pi-fw pi-user",
+            command: () => {
+                navigateToPage("/profile");
+            },
+        },
+        {
+            label: "Change Password",
+            icon: "pi pi-fw pi-lock",
+            command: () => {
+                navigateToPage("change-password");
+            },
+        },
+    ];
     return (
         <div className="layout-topbar">
             <button type="button" className="p-link  layout-menu-button layout-topbar-button" onClick={props.onToggleMenuClick}>
@@ -48,8 +76,9 @@ export const AppTopbar = (props) => {
                     </button>
                 </li>
                 <li>
-                    <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
+                    <button className="p-link layout-topbar-button" onClick={toggleMenu}>
                         <i className="pi pi-cog" />
+                        <Menu ref={menu} model={overlayMenuItems} popup />
                         <span>Settings</span>
                     </button>
                 </li>

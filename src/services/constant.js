@@ -6,6 +6,9 @@ export default class Constants {
         GET_ALL_CATEGORIES: "api/admin/categories",
         ENABLE_DISABLE_CATEGORY: "api/admin/enable-disable-category/",
         USERS: "api/admin/users",
+        BLOCK_UNBLOCK_USER: "api/admin/enable-disable-user/",
+        GET_ADMIN_PROFILE: "api/admin/profile",
+        UPDATE_ADMIN_PROFILE: "api/admin/update",
 
         FOUNDATION: "api/foundation/",
 
