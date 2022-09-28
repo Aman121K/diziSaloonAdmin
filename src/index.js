@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import { Route, Switch } from "react-router-dom";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
 
 //import * as serviceWorker from './serviceWorker';
 import { HashRouter } from "react-router-dom";
@@ -13,6 +14,7 @@ ReactDOM.render(
     <HashRouter>
         <Switch>
             <Route path="/" exact={true} component={Login} />
+            <Route path="/forgetpassword" exact component={ForgotPassword} />
             <ScrollToTop>
                 <App></App>
             </ScrollToTop>

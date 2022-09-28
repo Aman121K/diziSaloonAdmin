@@ -5,7 +5,7 @@ import { Button } from "primereact/button";
 import { postData } from "../services/http.service";
 import Constants from "../services/constant";
 import { authenticate, isAuthenticated } from "../services/auth";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { Messages } from "primereact/messages";
 
 const Login = () => {
@@ -100,6 +100,12 @@ const Login = () => {
                         </div>
 
                         {loading ? <Button label="Login..."></Button> : <Button type="submit" onClick={handleSubmit} label="Login"></Button>}
+                        <div className="text-right mt-4">
+                            <Link to="/forgetpassword" className="text-decoration-none">
+                                &nbsp;
+                                <span className="h6 navyColor font_bolder text-right">Forgot Password?</span>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
