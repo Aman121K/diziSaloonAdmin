@@ -44,13 +44,13 @@ export const AppTopbar = (props) => {
                 navigateToPage("/profile");
             },
         },
-        {
-            label: "Change Password",
-            icon: "pi pi-fw pi-lock",
-            command: () => {
-                navigateToPage("change-password");
-            },
-        },
+        // {
+        //     label: "Change Password",
+        //     icon: "pi pi-fw pi-lock",
+        //     command: () => {
+        //         navigateToPage("change-password");
+        //     },
+        // },
     ];
     return (
         <div className="layout-topbar">
@@ -69,16 +69,20 @@ export const AppTopbar = (props) => {
             </Link>
 
             <ul className={classNames("layout-topbar-menu lg:flex origin-top", { "layout-topbar-menu-mobile-active": props.mobileTopbarMenuActive })}>
-                <li>
+                {/* <li>
                     <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
                         <i className="pi pi-calendar" />
                         <span>Events</span>
                     </button>
-                </li>
+                </li> */}
                 <li>
-                    <button className="p-link layout-topbar-button" onClick={toggleMenu}>
+                    <button
+                        className="p-link layout-topbar-button"
+                        //  onClick={toggleMenu}
+                        onClick={() => navigateToPage("/profile")}
+                    >
                         <i className="pi pi-cog" />
-                        <Menu ref={menu} model={overlayMenuItems} popup />
+                        {/* <Menu ref={menu} model={overlayMenuItems} popup /> */}
                         <span>Settings</span>
                     </button>
                 </li>

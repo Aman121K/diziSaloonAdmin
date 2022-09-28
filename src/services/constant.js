@@ -13,6 +13,9 @@ export default class Constants {
         FORGOT_PASSWORD: "api/admin/forgot-password",
         RESET_PASSWORD: "api/admin/change-forgot-password",
 
+        PROVIDERS: "api/admin/providers",
+        BLOCK_UNBLOCK_PROVIDER: "api/admin/enable-disable-provider/",
+
         FOUNDATION: "api/foundation/",
 
         GET_CATEGORY: "api/admin/category/",

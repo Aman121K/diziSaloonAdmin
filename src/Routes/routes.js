@@ -2,6 +2,7 @@ import Dashboard from "../components/Dashboard";
 import FormLayoutDemo from "../components/FormLayoutDemo";
 import Categories from "../components/Categories";
 import Users from "../components/Users";
+import Providers from "../components/Providers";
 import Profile from "../pages/Profile";
 export const PrivateRoutes = [
     {
@@ -18,6 +19,11 @@ export const PrivateRoutes = [
         path: "/users",
         name: "Users",
         component: Users,
+    },
+    {
+        path: "/providers",
+        name: "Providers",
+        component: Providers,
     },
     {
         path: "/profile",

@@ -69,7 +69,7 @@ const Categories = () => {
                             <Button icon="pi pi-plus" label="Create Category" onClick={() => setOpenModal(true)} />
                         </div>
 
-                        <DataTable value={category} responsiveLayout="scroll" paginator rows={5}>
+                        <DataTable value={category} responsiveLayout="scroll" paginator rows={8}>
                             <Column field="categoryName" header="Name" style={{ width: "35%" }}></Column>
                             <Column header="Image" body={imageBodyTemplate} style={{ width: "35%" }} />
                             <Column header="Action" body={actionTemplate} style={{ width: "25%" }} />

@@ -78,28 +78,30 @@ const Login = () => {
                         </div>
                         <h3>Admin Login</h3>
                         <Messages ref={message} />
-                        <div className="field">
-                            <label htmlFor="email">Email</label>
-                            <InputText
-                                id="email"
-                                type="text"
-                                onChange={(e) => {
-                                    setField("email", e.target.value);
-                                }}
-                            />
-                        </div>
-                        <div className="field mb-4">
-                            <label htmlFor="password">Password</label>
-                            <Password
-                                onChange={(e) => {
-                                    setField("password", e.target.value);
-                                }}
-                                toggleMask
-                                feedback={false}
-                            />
-                        </div>
+                        <form onSubmit={handleSubmit}>
+                            <div className="field">
+                                <label htmlFor="email">Email</label>
+                                <InputText
+                                    id="email"
+                                    type="text"
+                                    onChange={(e) => {
+                                        setField("email", e.target.value);
+                                    }}
+                                />
+                            </div>
+                            <div className="field mb-4">
+                                <label htmlFor="password">Password</label>
+                                <Password
+                                    onChange={(e) => {
+                                        setField("password", e.target.value);
+                                    }}
+                                    toggleMask
+                                    feedback={false}
+                                />
+                            </div>
 
-                        {loading ? <Button label="Login..."></Button> : <Button type="submit" onClick={handleSubmit} label="Login"></Button>}
+                            {loading ? <Button label="Login..."></Button> : <Button type="submit" label="Login"></Button>}
+                        </form>
                         <div className="text-right mt-4">
                             <Link to="/forgetpassword" className="text-decoration-none">
                                 &nbsp;
@@ -109,8 +111,6 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-
-            {/* {didRedirect ? <Redirect to="/dashboard" /> : null} */}
         </React.Fragment>
     );
 };

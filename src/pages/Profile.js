@@ -4,7 +4,7 @@ import { Messages } from "primereact/messages";
 import { Button } from "primereact/button";
 import profile from "../assets/demo/flags/profile.png";
 import Constants from "../services/constant";
-import { getData, putData ,postData} from "../services/http.service";
+import { getData, putData, postData } from "../services/http.service";
 import { InputText } from "primereact/inputtext";
 const Profile = () => {
     const [info, setInfo] = useState({
@@ -40,11 +40,14 @@ const Profile = () => {
         if (img) {
             formdata.append("adminImage", img);
         }
-        putData(Constants.END_POINT.UPDATE_ADMIN_PROFILE,formdata)
+        putData(Constants.END_POINT.UPDATE_ADMIN_PROFILE, formdata)
             .then((res) => {
                 console.log("res::", res);
                 if (res.success) {
                     getAllProfile();
+                    message.current.show({ severity: "success", content: res.message });
+                } else {
+                    message.current.show({ severity: "error", content: res.message });
                 }
             })
             .catch((err) => {
@@ -52,20 +55,31 @@ const Profile = () => {
             });
     };
 
-    const updatePassword =()=>{
-        postData(Constants.END_POINT.CHANGE_PASSWORD,{password:info.password,newPassword:info.newPassword}).then((res)=>console.log(res)).catch((err)=>console.log(err))
-        
-    }
+    const updatePassword = () => {
+        if (info?.newPassword && info?.password) {
+            postData(Constants.END_POINT.CHANGE_PASSWORD, { password: info.password, newPassword: info.newPassword })
+                .then((res) => {
+                    console.log(res);
+                    if (res.success) {
+                        message.current.show({ severity: "success", content: res.message });
+                    } else {
+                        message.current.show({ severity: "error", content: res.message });
+                    }
+                    setInfo({ ...info, password: "", newPassword: "" });
+                })
+                .catch((err) => console.log(err));
+        }
+    };
 
     const message = useRef();
     return (
-        <div className="grid mt-5">
+        <div className="grid">
             <div className="col-11 md:col-12 mx-auto">
                 <div className="card">
-                    <h3>Edit Profile</h3>
+                    <h3>Admin Profile </h3>
                     <Messages ref={message} />
-                    <div className="flex  p-fluid">
-                        <label className="mr-4">Edit Profile</label>
+                    <div className="p-fluid">
+                        <label className="mr-4">Edit Profile Image</label>
                         <div style={{ width: "100px" }}>
                             <label htmlFor="img">
                                 <img style={{ width: "100%" }} src={img ? URL.createObjectURL(img) : profile} alt={profile} />
@@ -114,9 +128,9 @@ const Profile = () => {
                             <label htmlFor="password">Old password</label>
                             <Password
                                 onChange={(e) => {
-                                    setInfo({ ...info, password:e.target.value });
+                                    setInfo({ ...info, password: e.target.value });
                                 }}
-                                // value={info.password}
+                                value={info.password}
                                 toggleMask
                                 feedback={false}
                             />
@@ -125,10 +139,10 @@ const Profile = () => {
                             <label htmlFor="newPassword"> New Password</label>
                             <Password
                                 onChange={(e) => {
-                                   setInfo({...info,newPassword:e.target.value})
+                                    setInfo({ ...info, newPassword: e.target.value });
                                 }}
                                 toggleMask
-                                // value={info.newPassword}
+                                value={info.newPassword}
                                 feedback={false}
                             />
                         </div>
