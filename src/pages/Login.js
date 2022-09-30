@@ -46,7 +46,6 @@ const Login = () => {
             .then((res) => {
                 setLoading(false);
                 if (res.success) {
-                    console.log(res);
                     authenticate(res, () => {
                         if (isAuthenticated()) {
                             history.push("/dashboard");

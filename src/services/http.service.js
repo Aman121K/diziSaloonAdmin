@@ -14,7 +14,6 @@ export const getData = (url) => {
             if (response.status === 401) {
                 localStorage.removeItem("jwt");
             }
-            console.log(response.data);
             return response.data;
         })
         .catch((error) => {
@@ -34,7 +33,6 @@ export const postData = (url, body) => {
             },
         })
         .then((response) => {
-            console.log(response.data);
             return response.data;
         })
         .catch((error) => {
@@ -51,7 +49,6 @@ export const postData1 = (url, body) => {
             },
         })
         .then((response) => {
-            console.log(response.data);
             return response.data;
         })
         .catch((error) => {
@@ -69,7 +66,6 @@ export const putData = (url, body) => {
             },
         })
         .then((response) => {
-            console.log(response.data);
             return response.data;
         })
         .catch((error) => {
@@ -86,7 +82,6 @@ export const putData1 = (url, body) => {
             },
         })
         .then((response) => {
-            console.log(response.data);
             return response.data;
         })
         .catch((error) => {
@@ -103,7 +98,6 @@ export const patchData = (url, body) => {
             },
         })
         .then((response) => {
-            console.log(response.data);
             return response.data;
         })
         .catch((error) => {
@@ -124,7 +118,6 @@ export const deleteData = (url, body) => {
             body
         )
         .then((response) => {
-            console.log(response.data);
             return response.data;
         })
         .catch((error) => {
@@ -145,7 +138,6 @@ export const uploadFile = (url, body) => {
             body
         )
         .then((response) => {
-            console.log(response.data);
             return response.data;
         })
         .catch((error) => {

@@ -23,7 +23,6 @@ const Users = () => {
         getData(Constants.END_POINT.BLOCK_UNBLOCK_USER + id)
             .then((res) => {
                 getAllUsers();
-                console.log("res::", res);
             })
             .catch((err) => console.log);
     };

@@ -6,7 +6,7 @@ import { Password } from "primereact/password";
 import { postData } from "../services/http.service";
 import Constants from "../services/constant";
 import { Messages } from "primereact/messages";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { Toast } from "primereact/toast";
 
 const ForgotPassword = () => {
@@ -23,7 +23,6 @@ const ForgotPassword = () => {
 
     const message = useRef();
     const toast = useRef(null);
-    console.log("toast::", toast);
 
     const addErrorMessage = (msg) => {
         message.current.show({ severity: "error", content: msg });
@@ -35,16 +34,19 @@ const ForgotPassword = () => {
     const validateForm = () => {
         let errors = {};
         if (!data.otpcode) {
-            errors.email = "OTP is required";
+            errors.otpcode = "OTP is required";
         } else if (!/^[0-9]{6}$/.test(data.otpcode)) {
-            errors.email = "Enter Valid Otp";
+            errors.otpcode = "Enter Valid Otp";
         }
-        //Email field
-
-        //Password field
 
         if (!data.password) {
             errors.password = "Password is required";
+        }
+        if (!data.confirmPassword) {
+            errors.confirmPassword = "Confirm Password is required";
+        }
+        if (data.password !== data.confirmPassword) {
+            errors.confirmPassword = "Password and confirm Password do not match";
         }
         setErr(errors);
         if (Object.keys(errors).length === 0) {
@@ -55,10 +57,11 @@ const ForgotPassword = () => {
     };
 
     const email = data?.email;
-    const handleForgot = (e) => {
-        e.preventDefault();
+    const handleForgot = () => {
+        setLoading(true);
         postData(Constants.END_POINT.FORGOT_PASSWORD, { email })
             .then((res) => {
+                setLoading(false);
                 if (res.success) {
                     showSuccess();
                     setTimeout(() => setForgetPassword(res.data.email), 100);
@@ -69,25 +72,32 @@ const ForgotPassword = () => {
 
                 console.log(res);
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                addErrorMessage("Something went wrong.");
+                setLoading(false);
+                console.log(err);
+            });
     };
-    const handleResetPassword = (e) => {
-        e.preventDefault();
+    const handleResetPassword = () => {
         const form = validateForm();
-        if (!form) {
-        } else {
+        if (form) {
+            setLoading(true);
             postData(Constants.END_POINT.RESET_PASSWORD, { email: data?.email, otpcode: data?.otpcode, password: data?.password })
                 .then((res) => {
+                    setLoading(false);
                     if (res.success) {
                         toast.current.show({ severity: "success", summary: "Success Message", detail: "Order submitted" });
 
-                        setTimeout(() => history.push("/login"), 500);
+                        setTimeout(() => history.push("/login"), 1500);
                     } else {
                         addErrorMessage(res.message);
                     }
-                    console.log(res);
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => {
+                    addErrorMessage("Something went wrong.");
+                    setLoading(false);
+                    console.log(err);
+                });
         }
     };
     const sendEmail = () => {
@@ -114,6 +124,12 @@ const ForgotPassword = () => {
                 </div>
 
                 {loading ? <Button label="Send OTP..."></Button> : <Button type="submit" label="Send OTP" onClick={handleForgot}></Button>}
+                <div className="text-right mt-4">
+                    <Link to="/login" className="text-decoration-none">
+                        &nbsp;
+                        <span className="h6 navyColor font_bolder text-right"> Go to Login</span>
+                    </Link>
+                </div>
             </div>
         );
     };
@@ -125,6 +141,7 @@ const ForgotPassword = () => {
                     <h2>
                         Forgot<span style={{ color: "#d4c526" }}>Password</span>
                     </h2>
+                    <Messages ref={message} />
                 </div>
 
                 <div className="field">
@@ -136,6 +153,7 @@ const ForgotPassword = () => {
                             setData({ ...data, otpcode: e.target.value });
                         }}
                     />
+                    {err?.otpcode && <div style={{ color: "red" }}>{err?.otpcode}</div>}
                 </div>
                 <div className="field">
                     <label htmlFor="password">Password</label>
@@ -146,6 +164,8 @@ const ForgotPassword = () => {
                             setData({ ...data, password: e.target.value });
                         }}
                     />
+                    {err?.password && <div style={{ color: "red" }}>{err?.password}</div>}
+                    {}
                 </div>
                 <div className="field">
                     <label htmlFor="password"> Confirm Password</label>
@@ -156,6 +176,7 @@ const ForgotPassword = () => {
                             setData({ ...data, confirmPassword: e.target.value });
                         }}
                     />
+                    {err?.confirmPassword && <div style={{ color: "red" }}>{err?.confirmPassword}</div>}
                 </div>
 
                 {loading ? <Button label="Reset Password..."></Button> : <Button type="submit" label="Reset Password" onClick={handleResetPassword}></Button>}

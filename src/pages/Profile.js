@@ -9,7 +9,7 @@ import { InputText } from "primereact/inputtext";
 const Profile = () => {
     const [info, setInfo] = useState({
         name: null,
-        mobile: null,
+        email: null,
         adminImage: null,
         password: null,
         newPassword: null,
@@ -24,9 +24,8 @@ const Profile = () => {
     const getAllProfile = () => {
         getData(Constants.END_POINT.GET_ADMIN_PROFILE)
             .then((res) => {
-                console.log("res::", res);
                 if (res.success) {
-                    setInfo({ ...info, name: res.data.name, mobile: res.data.mobile, adminImage: res.data.adminImage });
+                    setInfo({ ...info, name: res.data.name, email: res.data.email, adminImage: res.data.adminImage });
                 }
             })
             .catch((err) => {
@@ -42,7 +41,6 @@ const Profile = () => {
         }
         putData(Constants.END_POINT.UPDATE_ADMIN_PROFILE, formdata)
             .then((res) => {
-                console.log("res::", res);
                 if (res.success) {
                     getAllProfile();
                     message.current.show({ severity: "success", content: res.message });
@@ -59,7 +57,6 @@ const Profile = () => {
         if (info?.newPassword && info?.password) {
             postData(Constants.END_POINT.CHANGE_PASSWORD, { password: info.password, newPassword: info.newPassword })
                 .then((res) => {
-                    console.log(res);
                     if (res.success) {
                         message.current.show({ severity: "success", content: res.message });
                     } else {
@@ -110,14 +107,15 @@ const Profile = () => {
                             />
                         </div>
                         <div className="field col-6">
-                            <label htmlFor="mobile">Mobile</label>
+                            <label htmlFor="mobile">Email</label>
                             <InputText
                                 id="mobile"
                                 type="text"
-                                value={info.mobile}
+                                value={info.email}
                                 onChange={(e) => {
-                                    setInfo({ ...info, mobile: e.target.value });
+                                    setInfo({ ...info, email: e.target.value });
                                 }}
+                                disabled
                             />
                         </div>
                     </div>

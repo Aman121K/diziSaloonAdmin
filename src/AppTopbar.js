@@ -19,7 +19,6 @@ export const AppTopbar = (props) => {
             reject,
         });
     };
-    console.log("window::", window.location);
     const accept = () => {
         logout(() => {
             setTimeout(() => {
@@ -33,7 +32,6 @@ export const AppTopbar = (props) => {
         menu.current.toggle(event);
     };
     const navigateToPage = (path) => {
-        console.log("Navigate to path " + path);
         history.push(path);
     };
     const overlayMenuItems = [

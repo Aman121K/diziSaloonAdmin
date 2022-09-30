@@ -164,7 +164,7 @@ const App = () => {
                 },
                 { label: "Categories", icon: "pi pi-fw pi-book", to: "/categories" },
                 { label: "Users", icon: "pi pi-fw pi-users", to: "/users" },
-                { label: "Providers", icon: "pi pi-fw pi-briefcase", to: "/providers" },
+                // { label: "Providers", icon: "pi pi-fw pi-briefcase", to: "/providers" },
             ],
         },
         // {
