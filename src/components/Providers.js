@@ -5,6 +5,7 @@ import { getData } from "../services/http.service";
 import Constants from "../services/constant";
 import profile from "../assets/demo/flags/profile.png";
 import { Button } from "primereact/button";
+import { Link } from "react-router-dom";
 
 const Provider = () => {
     useEffect(() => {
@@ -40,6 +41,11 @@ const Provider = () => {
                 <Button type="button" className={`p-button-raised p-button-rounded  p-button-outlined ${rowData?.isDeleted ? "p-button-success" : "p-button-danger"}`} onClick={() => blockUser(rowData?._id)}>
                     {rowData?.isDeleted ? "Unblock" : "Block"}
                 </Button>
+                <Link to={`/providerInfo/${rowData?._id}`}>
+                    <Button type="button" className={`p-button-raised p-button-rounded  p-button-outlined p-button-info ml-4`}>
+                        View
+                    </Button>
+                </Link>
             </div>
         );
     };

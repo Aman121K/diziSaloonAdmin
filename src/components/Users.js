@@ -13,7 +13,9 @@ const Users = () => {
     const getAllUsers = () => {
         getData(Constants.END_POINT.USERS)
             .then((res) => {
-                setUsers(res.data);
+                if (res.success) {
+                    setUsers(res.data);
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -26,7 +28,7 @@ const Users = () => {
             })
             .catch((err) => console.log);
     };
-    const [users, setUsers] = useState();
+    const [users, setUsers] = useState([]);
 
     const imageBodyTemplate = (rowData) => {
         return <img src={rowData.image ? Constants.BASE_URL + rowData.image : profile} alt={rowData.image} width={50} />;

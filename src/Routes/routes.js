@@ -4,6 +4,8 @@ import Categories from "../components/Categories";
 import Users from "../components/Users";
 import Providers from "../components/Providers";
 import Profile from "../pages/Profile";
+import ProviderInfo from "../pages/ProviderInfo";
+
 export const PrivateRoutes = [
     {
         path: "/dashboard",
@@ -29,6 +31,11 @@ export const PrivateRoutes = [
         path: "/profile",
         name: "Profile",
         component: Profile,
+    },
+    {
+        path: "/providerInfo/:id",
+        name: "ProviderInfo",
+        component: ProviderInfo,
     },
 
     {
