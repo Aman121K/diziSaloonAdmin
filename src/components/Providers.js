@@ -38,14 +38,14 @@ const Provider = () => {
     const blockBodyTemplate = (rowData) => {
         return (
             <div className="">
-                <Button type="button" className={`p-button-raised p-button-rounded  p-button-outlined ${rowData?.isDeleted ? "p-button-success" : "p-button-danger"}`} onClick={() => blockUser(rowData?._id)}>
-                    {rowData?.isDeleted ? "Unblock" : "Block"}
-                </Button>
                 <Link to={`/providerInfo/${rowData?._id}`}>
                     <Button type="button" className={`p-button-raised p-button-rounded  p-button-outlined p-button-info ml-4`}>
                         View
                     </Button>
                 </Link>
+                <Button type="button" className={`p-button-raised p-button-rounded  p-button-outlined ${rowData?.isDeleted ? "p-button-success  ml-4" : "p-button-danger ml-4"}`} onClick={() => blockUser(rowData?._id)}>
+                    {rowData?.isDeleted ? "Unblock" : "Block"}
+                </Button>
             </div>
         );
     };

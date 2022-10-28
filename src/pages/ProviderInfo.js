@@ -6,67 +6,34 @@ import profile from "../assets/demo/flags/profile.png";
 import Constants from "../services/constant";
 import { getData, putData, postData } from "../services/http.service";
 import { InputText } from "primereact/inputtext";
+import { Accordion, AccordionTab } from "primereact/accordion";
+import { useParams } from "react-router-dom";
+import { DataView, DataViewLayoutOptions } from "primereact/dataview";
+import { Rating } from "primereact/rating";
+
 const ProviderInfo = () => {
-    const [info, setInfo] = useState({
-        name: null,
-        email: null,
-        adminImage: null,
-        password: null,
-        newPassword: null,
-        error: null,
-        loading: false,
-    });
-    const [img, setImg] = useState(null);
+    const [info, setInfo] = useState({});
+    const { id } = useParams();
+
+    const [layout, setLayout] = useState("grid");
+
     useEffect(() => {
         getAllProfile();
     }, []);
 
     const getAllProfile = () => {
-        getData(Constants.END_POINT.GET_ADMIN_PROFILE)
+        getData(Constants.END_POINT.GET_PROVIDER + id)
             .then((res) => {
+                console.log("res::", res);
                 if (res.success) {
-                    setInfo({ ...info, name: res.data.name, email: res.data.email, adminImage: res.data.adminImage });
+                    setInfo(res?.data);
                 }
             })
             .catch((err) => {
                 console.log(err);
             });
     };
-
-    const updateAdminProfile = () => {
-        let formdata = new FormData();
-        formdata.append("name", info?.name);
-        if (img) {
-            formdata.append("adminImage", img);
-        }
-        putData(Constants.END_POINT.UPDATE_ADMIN_PROFILE, formdata)
-            .then((res) => {
-                if (res.success) {
-                    getAllProfile();
-                    message.current.show({ severity: "success", content: res.message });
-                } else {
-                    message.current.show({ severity: "error", content: res.message });
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-
-    const updatePassword = () => {
-        if (info?.newPassword && info?.password) {
-            postData(Constants.END_POINT.CHANGE_PASSWORD, { password: info.password, newPassword: info.newPassword })
-                .then((res) => {
-                    if (res.success) {
-                        message.current.show({ severity: "success", content: res.message });
-                    } else {
-                        message.current.show({ severity: "error", content: res.message });
-                    }
-                    setInfo({ ...info, password: "", newPassword: "" });
-                })
-                .catch((err) => console.log(err));
-        }
-    };
+    let data = info;
 
     const message = useRef();
     return (
@@ -85,135 +52,56 @@ const ProviderInfo = () => {
                     </div>
                     <div className="flex p-fluid justify-content-between">
                         <div className="field col-6">
-                            <label htmlFor="name">Name</label>
-                            <InputText
-                                id="name"
-                                type="text"
-                                value={info.name}
-                                onChange={(e) => {
-                                    setInfo({ ...info, name: e.target.value });
-                                }}
-                            />
+                            <label htmlFor="name"> FirstName</label>
+                        </div>
+                        <div className="field col-6">
+                            <label htmlFor="name"> LastName</label>
+                        </div>
+                    </div>
+
+                    <div className="p-fluid flex">
+                        <div className="field   col-6">
+                            <label htmlFor="password">Mobile</label>
                         </div>
                         <div className="field col-6">
                             <label htmlFor="mobile">Email</label>
-                            <InputText
-                                id="mobile"
-                                type="text"
-                                value={info.email}
-                                onChange={(e) => {
-                                    setInfo({ ...info, email: e.target.value });
-                                }}
-                                disabled
-                            />
                         </div>
                     </div>
-
-                    <Button label="Save Changes" className="p-button-outlined  p-button-info mb-4" onClick={updateAdminProfile} />
-                    <div className="p-fluid flex">
-                        <div className="field   col-6">
-                            <label htmlFor="password">Old password</label>
-                            <Password
-                                onChange={(e) => {
-                                    setInfo({ ...info, password: e.target.value });
-                                }}
-                                value={info.password}
-                                toggleMask
-                                feedback={false}
-                            />
-                        </div>
-                        <div className="field   col-6">
-                            <label htmlFor="newPassword"> New Password</label>
-                            <Password
-                                onChange={(e) => {
-                                    setInfo({ ...info, newPassword: e.target.value });
-                                }}
-                                toggleMask
-                                value={info.newPassword}
-                                feedback={false}
-                            />
-                        </div>
-                    </div>
-
-                    {info?.loading ? <Button label="Updating Password..."></Button> : <Button className="p-button-info p-button-outlined" type="submit" label="Change Password" onClick={updatePassword}></Button>}
                 </div>
             </div>
             <div className="col-12 md:col-4 mx-auto">
                 <div className="card">
-                    <h3>Provider Info </h3>
+                    <h3>Provider Information </h3>
                     <Messages ref={message} />
-                    <div className="p-fluid">
-                        <label className="mr-4">Edit Profile Image</label>
-                        <div style={{ width: "100px" }}>
-                            <label htmlFor="img">
-                                <img style={{ width: "100%" }} src={img ? URL.createObjectURL(img) : profile} alt={profile} />
-                            </label>
-                        </div>
-
-                        <input
-                            accept="image/*"
-                            className="input-file"
-                            id="img"
-                            type="file"
-                            hidden
-                            onChange={(e) => {
-                                setImg(e.target.files[0]);
-                            }}
-                        />
-                    </div>
-                    <div className="flex p-fluid justify-content-between">
-                        <div className="field col-6">
-                            <label htmlFor="name">Name</label>
-                            <InputText
-                                id="name"
-                                type="text"
-                                value={info.name}
-                                onChange={(e) => {
-                                    setInfo({ ...info, name: e.target.value });
-                                }}
-                            />
-                        </div>
-                        <div className="field col-6">
-                            <label htmlFor="mobile">Email</label>
-                            <InputText
-                                id="mobile"
-                                type="text"
-                                value={info.email}
-                                onChange={(e) => {
-                                    setInfo({ ...info, email: e.target.value });
-                                }}
-                                disabled
-                            />
+                    <div className="p-fluid">{info?.business?.businessName}</div>
+                    <div className="col-12">
+                        <div className="flex flex-column md:flex-row align-items-center p-3 w-full">
+                            <img src={info?.business?.image} alt={"hghj"} className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
+                            <div className="flex-1 text-center md:text-left">
+                                <div className="font-bold text-2xl">{info?.business?.businessName}</div>
+                                <div className="mb-3">{info?.firstName}</div>
+                                <Rating value={info?.business?.rating} readonly cancel={false} className="mb-2"></Rating>
+                                <div className="flex align-items-center">
+                                    <i className="pi pi-tag mr-2"></i>
+                                    <span className="font-semibold">{info?.business?.ff}</span>
+                                </div>
+                            </div>
+                            <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
+                                <span className="text-2xl font-semibold mb-2 align-self-center md:align-self-end">${info?.business?.startingPrice}</span>
+                                <Button icon="pi pi-shopping-cart" label="Add to Cart" disabled={true === "OUTOFSTOCK"} className="mb-2"></Button>
+                                <span className={`product-badge status-${info?.business?.inventoryStatus}`}>{info?.business?.inventoryStatus}</span>
+                            </div>
                         </div>
                     </div>
 
-                    <Button label="Save Changes" className="p-button-outlined  p-button-info mb-4" onClick={updateAdminProfile} />
-                    <div className="p-fluid flex">
-                        <div className="field   col-6">
-                            <label htmlFor="password">Old password</label>
-                            <Password
-                                onChange={(e) => {
-                                    setInfo({ ...info, password: e.target.value });
-                                }}
-                                value={info.password}
-                                toggleMask
-                                feedback={false}
-                            />
-                        </div>
-                        <div className="field   col-6">
-                            <label htmlFor="newPassword"> New Password</label>
-                            <Password
-                                onChange={(e) => {
-                                    setInfo({ ...info, newPassword: e.target.value });
-                                }}
-                                toggleMask
-                                value={info.newPassword}
-                                feedback={false}
-                            />
-                        </div>
-                    </div>
-
-                    {info?.loading ? <Button label="Updating Password..."></Button> : <Button className="p-button-info p-button-outlined" type="submit" label="Change Password" onClick={updatePassword}></Button>}
+                    <Accordion multiple>
+                        <AccordionTab header="About Us">
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only
+                            five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
+                            including versions of Lorem Ipsum.
+                        </AccordionTab>
+                        {/* <AccordionTab header="Timings"> Working Hours{timings?.map((item, index) => item.weekDay)}</AccordionTab> */}
+                    </Accordion>
                 </div>
             </div>
         </div>
