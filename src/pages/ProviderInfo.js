@@ -15,16 +15,14 @@ const ProviderInfo = () => {
     const [info, setInfo] = useState({});
     const { id } = useParams();
 
-    const [layout, setLayout] = useState("grid");
-
     useEffect(() => {
         getAllProfile();
     }, []);
+    console.log("info::", info);
 
     const getAllProfile = () => {
         getData(Constants.END_POINT.GET_PROVIDER + id)
             .then((res) => {
-                console.log("res::", res);
                 if (res.success) {
                     setInfo(res?.data);
                 }
@@ -33,7 +31,6 @@ const ProviderInfo = () => {
                 console.log(err);
             });
     };
-    let data = info;
 
     const message = useRef();
     return (
@@ -69,39 +66,38 @@ const ProviderInfo = () => {
                     </div>
                 </div>
             </div>
-            <div className="col-12 md:col-4 mx-auto">
-                <div className="card">
+            <div className="col-12 md:col-4">
+                <div className="card m-3 border-1 surface-border">
                     <h3>Provider Information </h3>
-                    <Messages ref={message} />
-                    <div className="p-fluid">{info?.business?.businessName}</div>
-                    <div className="col-12">
-                        <div className="flex flex-column md:flex-row align-items-center p-3 w-full">
-                            <img src={info?.business?.image} alt={"hghj"} className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
-                            <div className="flex-1 text-center md:text-left">
-                                <div className="font-bold text-2xl">{info?.business?.businessName}</div>
-                                <div className="mb-3">{info?.firstName}</div>
-                                <Rating value={info?.business?.rating} readonly cancel={false} className="mb-2"></Rating>
-                                <div className="flex align-items-center">
-                                    <i className="pi pi-tag mr-2"></i>
-                                    <span className="font-semibold">{info?.business?.ff}</span>
-                                </div>
-                            </div>
-                            <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-                                <span className="text-2xl font-semibold mb-2 align-self-center md:align-self-end">${info?.business?.startingPrice}</span>
-                                <Button icon="pi pi-shopping-cart" label="Add to Cart" disabled={true === "OUTOFSTOCK"} className="mb-2"></Button>
-                                <span className={`product-badge status-${info?.business?.inventoryStatus}`}>{info?.business?.inventoryStatus}</span>
-                            </div>
+
+                    <div className="flex align-items-center justify-content-between">
+                        <div className="flex align-items-center">
+                            <i className="pi pi-tag mr-2" />
+                            <span className="font-semibold">business</span>
                         </div>
+                        <span className={`product-badge status-${info?.business?.isVerified ? "instock" : "outofstock"}`}> Not Verified</span>
+                    </div>
+                    <div className="text-center">
+                        <img src={Constants?.BASE_URL + info?.image} alt="" className="w-9 shadow-2 my-3 mx-0" />
+                        <div className="text-2xl font-bold">{info?.business?.businessName}</div>
+
+                        <Rating value={info?.business?.rating} readonly cancel={false} />
+                    </div>
+                    <div className="mt-4">
+                        <Accordion multiple>
+                            <AccordionTab header="About Us">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not
+                                only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
+                                PageMaker including versions of Lorem Ipsum.
+                            </AccordionTab>
+                            {/* <AccordionTab header="Timings"> Working Hours{timings?.map((item, index) => item.weekDay)}</AccordionTab> */}
+                        </Accordion>
                     </div>
 
-                    <Accordion multiple>
-                        <AccordionTab header="About Us">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only
-                            five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
-                            including versions of Lorem Ipsum.
-                        </AccordionTab>
-                        {/* <AccordionTab header="Timings"> Working Hours{timings?.map((item, index) => item.weekDay)}</AccordionTab> */}
-                    </Accordion>
+                    {/* <div className="flex align-items-center justify-content-between">
+                        <span className="text-2xl font-semibold">${info?.business?.price}</span>
+                        <Button icon="pi pi-shopping-cart" disabled={info?.business?.inventoryStatus === "OUTOFSTOCK"} />
+                    </div> */}
                 </div>
             </div>
         </div>
