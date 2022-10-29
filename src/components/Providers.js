@@ -65,12 +65,9 @@ const Provider = () => {
                     // header={header}
                 >
                     {/* <Column expander style={{ width: "3em" }} /> */}
-                    <Column field="firstName" header="Name" sortable />
-                    <Column field="email" header="Email" sortable />
-                    <Column field="mobile" header="Mobile" sortable />
-                    <Column header="Image" body={imageBodyTemplate} />
-                    <Column field="isOnline" header="Status" sortable body={statusBodyTemplate2} />
-                    <Column field="block" header="Action" body={blockBodyTemplate} />
+                    <Column field="firstName" header="Name" sortable style={{ width: "30px" }} />
+                    <Column field="isOnline" header="Status" sortable body={statusBodyTemplate2} style={{ width: "30px" }} />
+                    <Column field="block" header="Action" body={blockBodyTemplate} style={{ width: "40px" }} />
                 </DataTable>
             </div>
         </div>

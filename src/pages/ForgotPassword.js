@@ -69,8 +69,6 @@ const ForgotPassword = () => {
                 } else {
                     addErrorMessage(res.message);
                 }
-
-                console.log(res);
             })
             .catch((err) => {
                 addErrorMessage("Something went wrong.");

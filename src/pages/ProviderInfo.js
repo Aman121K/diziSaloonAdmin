@@ -10,6 +10,10 @@ import { Accordion, AccordionTab } from "primereact/accordion";
 import { useParams } from "react-router-dom";
 import { DataView, DataViewLayoutOptions } from "primereact/dataview";
 import { Rating } from "primereact/rating";
+import Instagram from "../../src/assets/demo/flags/Instagram.png";
+import FaceBook from "../../src/assets/demo/flags/Facebook.png";
+import Share from "../../src/assets/demo/flags/Share.png";
+import Website from "../../src/assets/demo/flags/Website.png";
 
 const ProviderInfo = () => {
     const [info, setInfo] = useState({});
@@ -18,7 +22,6 @@ const ProviderInfo = () => {
     useEffect(() => {
         getAllProfile();
     }, []);
-    console.log("info::", info);
 
     const getAllProfile = () => {
         getData(Constants.END_POINT.GET_PROVIDER + id)
@@ -31,44 +34,56 @@ const ProviderInfo = () => {
                 console.log(err);
             });
     };
+    const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const convertTime24to12 = (time24h) => {
+        let time = time24h.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time24h];
+
+        if (time.length > 1) {
+            time = time.slice(1, -1);
+            time[5] = +time[0] < 12 ? "AM" : "PM";
+            time[0] = +time[0] % 12 || 12;
+        }
+        return time.join("");
+    };
+
+    const SafetyRules = ["Employee wear Mask", "Mask available for purchase", "Client temperature checks"];
+
+    const ServiceInfo = info?.services?.map((item, i) => {
+        return item;
+    });
 
     const message = useRef();
     return (
         <div className="grid">
             <div className="col-12 md:col-8 mx-auto">
                 <div className="card">
-                    <h3>Provider Info </h3>
+                    <h3>Service Information </h3>
                     <Messages ref={message} />
-                    <div className="p-fluid">
-                        <label className="mr-4"> Image</label>
-                        <div style={{ width: "100px" }}>
-                            <label htmlFor="img">
-                                <img style={{ width: "100%" }} src={profile} alt={profile} />
-                            </label>
-                        </div>
-                    </div>
-                    <div className="flex p-fluid justify-content-between">
-                        <div className="field col-6">
-                            <label htmlFor="name"> FirstName</label>
-                        </div>
-                        <div className="field col-6">
-                            <label htmlFor="name"> LastName</label>
-                        </div>
-                    </div>
-
-                    <div className="p-fluid flex">
-                        <div className="field   col-6">
-                            <label htmlFor="password">Mobile</label>
-                        </div>
-                        <div className="field col-6">
-                            <label htmlFor="mobile">Email</label>
-                        </div>
-                    </div>
+                    {info?.services?.map((item, i) => {
+                        return (
+                            <div className="flex p-fluid justify-content-between">
+                                <div className="field col-4">
+                                    <label htmlFor="name"> Name</label>
+                                    <p>{item?.serviceName}</p>
+                                </div>
+                                <div className="field col-4">
+                                    <label htmlFor="name"> Price</label>
+                                    <p>{item?.price}</p>
+                                </div>
+                                <div className="field col-4">
+                                    <label htmlFor="name"> Duration</label>
+                                    <p>{item?.durationTime}</p>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
             <div className="col-12 md:col-4">
                 <div className="card m-3 border-1 surface-border">
                     <h3>Provider Information </h3>
+                    <div className="text-xl font-bold">{info?.firstName}</div>
+                    <a href={`mailto:${info?.email}`}>{info?.email}</a>
 
                     <div className="flex align-items-center justify-content-between">
                         <div className="flex align-items-center">
@@ -78,7 +93,7 @@ const ProviderInfo = () => {
                         <span className={`product-badge status-${info?.business?.isVerified ? "instock" : "outofstock"}`}> Not Verified</span>
                     </div>
                     <div className="text-center">
-                        <img src={Constants?.BASE_URL + info?.image} alt="" className="w-9 shadow-2 my-3 mx-0" />
+                        <img src={info?.business?.image ? Constants?.BASE_URL + info?.business?.image : profile} alt="" className="w-9 shadow-2 my-3 mx-0" />
                         <div className="text-2xl font-bold">{info?.business?.businessName}</div>
 
                         <Rating value={info?.business?.rating} readonly cancel={false} />
@@ -90,7 +105,36 @@ const ProviderInfo = () => {
                                 only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
                                 PageMaker including versions of Lorem Ipsum.
                             </AccordionTab>
-                            {/* <AccordionTab header="Timings"> Working Hours{timings?.map((item, index) => item.weekDay)}</AccordionTab> */}
+                            <AccordionTab header="Working Hours">
+                                {info?.business?.timings?.map((timing, i) => {
+                                    return (
+                                        <div className="col-12 flex">
+                                            {weekDays[timing.weekDay]}
+                                            <span>&nbsp; : </span>
+                                            <div>
+                                                {convertTime24to12(timing?.startTime)} - {convertTime24to12(timing?.endTime)}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </AccordionTab>
+                            <AccordionTab header="Social Media and Share">
+                                <div className="flex">
+                                    <img src={Instagram} alt="" width="55px"></img>
+                                    <img src={FaceBook} alt="" width="55px"></img>
+                                    <img src={Website} alt="" width="55px"></img>
+                                    <img src={Share} alt="" width="55px"></img>
+                                </div>
+                            </AccordionTab>
+                            <AccordionTab header="Safety Rules">
+                                <div className="flex">
+                                    <ul>
+                                        {SafetyRules?.map((rules, i) => (
+                                            <li>{rules}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </AccordionTab>
                         </Accordion>
                     </div>
 
