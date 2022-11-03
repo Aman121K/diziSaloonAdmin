@@ -14,6 +14,8 @@ import Instagram from "../../src/assets/demo/flags/Instagram.png";
 import FaceBook from "../../src/assets/demo/flags/Facebook.png";
 import Share from "../../src/assets/demo/flags/Share.png";
 import Website from "../../src/assets/demo/flags/Website.png";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 
 const ProviderInfo = () => {
     const [info, setInfo] = useState({});
@@ -59,28 +61,19 @@ const ProviderInfo = () => {
                 <div className="card">
                     <h3>Service Information </h3>
                     <Messages ref={message} />
-                    {info?.services?.map((item, i) => {
-                        return (
-                            <div className="flex p-fluid justify-content-between">
-                                <div className="field col-4">
-                                    <label htmlFor="name"> Name</label>
-                                    <p>{item?.serviceName}</p>
-                                </div>
-                                <div className="field col-4">
-                                    <label htmlFor="name"> Price</label>
-                                    <p>{item?.price}</p>
-                                </div>
-                                <div className="field col-4">
-                                    <label htmlFor="name"> Duration</label>
-                                    <p>{item?.durationTime}</p>
-                                </div>
-                            </div>
-                        );
-                    })}
+                    {info?.services?.length > 0 ? (
+                        <DataTable value={info?.services}>
+                            <Column field="serviceName" header="Service Name"></Column>
+                            <Column field="price" header="Price"></Column>
+                            <Column field="durationTime" header="Duration Time"></Column>
+                        </DataTable>
+                    ) : (
+                        "No services Found"
+                    )}
                 </div>
             </div>
             <div className="col-12 md:col-4">
-                <div className="card m-3 border-1 surface-border">
+                <div className="card">
                     <h3>Provider Information </h3>
                     <div className="text-xl font-bold">{info?.firstName}</div>
                     <a href={`mailto:${info?.email}`}>{info?.email}</a>
