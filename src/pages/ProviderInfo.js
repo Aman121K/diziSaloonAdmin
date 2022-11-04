@@ -1,14 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Password } from "primereact/password";
 import { Messages } from "primereact/messages";
-import { Button } from "primereact/button";
-import profile from "../assets/demo/flags/profile.png";
 import Constants from "../services/constant";
-import { getData, putData, postData } from "../services/http.service";
-import { InputText } from "primereact/inputtext";
+import { getData } from "../services/http.service";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { useParams } from "react-router-dom";
-import { DataView, DataViewLayoutOptions } from "primereact/dataview";
 import { Rating } from "primereact/rating";
 import Instagram from "../../src/assets/demo/flags/Instagram.png";
 import FaceBook from "../../src/assets/demo/flags/Facebook.png";
@@ -16,6 +11,7 @@ import Share from "../../src/assets/demo/flags/Share.png";
 import Website from "../../src/assets/demo/flags/Website.png";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import business from "../../src/assets/demo/flags/business.png";
 
 const ProviderInfo = () => {
     const [info, setInfo] = useState({});
@@ -47,13 +43,16 @@ const ProviderInfo = () => {
         }
         return time.join("");
     };
-
+    const formatCurrency = (value) => {
+        return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
+    };
     const SafetyRules = ["Employee wear Mask", "Mask available for purchase", "Client temperature checks"];
-
-    const ServiceInfo = info?.services?.map((item, i) => {
-        return item;
-    });
-
+    const priceBodyTemplate = (rowData) => {
+        return formatCurrency(parseFloat(rowData.price));
+    };
+    const durationBodyTemplate = (rowData) => {
+        return rowData?.durationTime + "min";
+    };
     const message = useRef();
     return (
         <div className="grid">
@@ -64,12 +63,18 @@ const ProviderInfo = () => {
                     {info?.services?.length > 0 ? (
                         <DataTable value={info?.services}>
                             <Column field="serviceName" header="Service Name"></Column>
-                            <Column field="price" header="Price"></Column>
-                            <Column field="durationTime" header="Duration Time"></Column>
+                            <Column field="price" body={priceBodyTemplate} header="Price"></Column>
+                            <Column field="durationTime" body={durationBodyTemplate} header="Duration Time"></Column>
                         </DataTable>
                     ) : (
                         "No services Found"
                     )}
+                </div>
+                <div className="card">
+                    <h3>Documents </h3>
+                    <div className="card  "></div>
+                    <div className="card "></div>
+                    <div className="card "></div>
                 </div>
             </div>
             <div className="col-12 md:col-4">
@@ -86,7 +91,7 @@ const ProviderInfo = () => {
                         <span className={`product-badge status-${info?.business?.isVerified ? "instock" : "outofstock"}`}> Not Verified</span>
                     </div>
                     <div className="text-center">
-                        <img src={info?.business?.image ? Constants?.BASE_URL + info?.business?.image : profile} alt="" className="w-9 shadow-2 my-3 mx-0" />
+                        <img src={info?.business?.image ? Constants?.BASE_URL + info?.business?.image : business} alt="" className="w-9 shadow-2 my-3 mx-0" />
                         <div className="text-2xl font-bold">{info?.business?.businessName}</div>
 
                         <Rating value={info?.business?.rating} readonly cancel={false} />
@@ -100,6 +105,7 @@ const ProviderInfo = () => {
                             </AccordionTab>
                             <AccordionTab header="Working Hours">
                                 {info?.business?.timings?.map((timing, i) => {
+                                    console.log("timing::", timing);
                                     return (
                                         <div className="col-12 flex">
                                             {weekDays[timing.weekDay]}
