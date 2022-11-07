@@ -29,9 +29,6 @@ const Provider = () => {
     };
     const [users, setUsers] = useState();
 
-    const imageBodyTemplate = (rowData) => {
-        return <img src={rowData.image ? Constants.BASE_URL + rowData.image : profile} alt={rowData.image} width={50} />;
-    };
     const statusBodyTemplate2 = (rowData) => {
         return <span className={`product-badge status-${rowData.isOnline ? "instock" : "outofstock"}`}>{rowData.isOnline ? "Online" : "Offline"}</span>;
     };

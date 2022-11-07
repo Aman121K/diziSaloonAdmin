@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Messages } from "primereact/messages";
 import Constants from "../services/constant";
-import { getData } from "../services/http.service";
+import { getData, postData } from "../services/http.service";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { useParams } from "react-router-dom";
 import { Rating } from "primereact/rating";
@@ -12,6 +12,9 @@ import Website from "../../src/assets/demo/flags/Website.png";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import business from "../../src/assets/demo/flags/business.png";
+import { Button } from "primereact/button";
+import { Toast } from "primereact/toast";
+import { Image } from "primereact/image";
 
 const ProviderInfo = () => {
     const [info, setInfo] = useState({});
@@ -31,6 +34,17 @@ const ProviderInfo = () => {
             .catch((err) => {
                 console.log(err);
             });
+    };
+    const toast = useRef(null);
+
+    const verifyBusinessProvider = (business_status) => {
+        postData(Constants.END_POINT.VERIFY_BUSINESS_PROVIDER + info?.business?._id, { isVerified: business_status })
+            .then((res) => {
+                const msg = res?.data?.isVerified;
+
+                toast.current.show({ severity: "success", summary: ` Status ${msg === "VERIFIED" ? "Approved" : "Rejected"}`, detail: "verification status updated Successfully" });
+            })
+            .catch((err) => console.log(err));
     };
     const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const convertTime24to12 = (time24h) => {
@@ -59,6 +73,8 @@ const ProviderInfo = () => {
             <div className="col-12 md:col-8 mx-auto">
                 <div className="card">
                     <h3>Service Information </h3>
+                    <Toast ref={toast} />
+
                     <Messages ref={message} />
                     {info?.services?.length > 0 ? (
                         <DataTable value={info?.services}>
@@ -70,12 +86,40 @@ const ProviderInfo = () => {
                         "No services Found"
                     )}
                 </div>
-                <div className="card">
-                    <h3>Documents </h3>
-                    <div className="card  "></div>
-                    <div className="card "></div>
-                    <div className="card "></div>
-                </div>
+                {info?.documents && (
+                    <div className="card">
+                        <>
+                            <div className="flex">
+                                <h3>Documents </h3>
+                                <div className="ml-4">
+                                    <Button type="button" className="p-button-raised p-button-rounded  p-button-outlined p-button-info" onClick={() => verifyBusinessProvider("VERIFIED")}>
+                                        Approve
+                                    </Button>
+                                </div>
+                                <div>
+                                    <Button type="button" className="p-button-raised p-button-rounded  p-button-outlined p-button-danger ml-2" onClick={() => verifyBusinessProvider("REJECTED")}>
+                                        Reject
+                                    </Button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div className=" card my-4 text-center">
+                                    <h4>Front</h4>
+                                    {info?.documents?.front ? <Image src={Constants?.BASE_URL + info?.documents?.front} alt="galleria" width="150px" preview /> : null}
+                                </div>
+                                <div className=" card my-4 text-center">
+                                    <h4>Back</h4>
+                                    {info?.documents?.back ? <Image src={Constants?.BASE_URL + info?.documents?.back} alt="galleria" width="150px" preview /> : null}
+                                </div>
+                                <div className=" card my-4 text-center">
+                                    <h4>Selfie</h4>
+                                    {info?.documents?.selfie ? <Image src={Constants?.BASE_URL + info?.documents?.selfie} alt="galleria" width="150px" preview /> : null}
+                                </div>
+                            </div>
+                        </>
+                    </div>
+                )}
             </div>
             <div className="col-12 md:col-4">
                 <div className="card">
@@ -88,7 +132,7 @@ const ProviderInfo = () => {
                             <i className="pi pi-tag mr-2" />
                             <span className="font-semibold">business</span>
                         </div>
-                        <span className={`product-badge status-${info?.business?.isVerified ? "instock" : "outofstock"}`}> Not Verified</span>
+                        <span className={`product-badge status-${info?.business?.isVerified === "VERIFIED" ? "instock" : "outofstock"}`}> {info?.business?.isVerified == "VERIFIED" ? "Verified" : "Rejected"}</span>
                     </div>
                     <div className="text-center">
                         <img src={info?.business?.image ? Constants?.BASE_URL + info?.business?.image : business} alt="" className="w-9 shadow-2 my-3 mx-0" />
@@ -105,7 +149,6 @@ const ProviderInfo = () => {
                             </AccordionTab>
                             <AccordionTab header="Working Hours">
                                 {info?.business?.timings?.map((timing, i) => {
-                                    console.log("timing::", timing);
                                     return (
                                         <div className="col-12 flex">
                                             {weekDays[timing.weekDay]}
@@ -129,7 +172,7 @@ const ProviderInfo = () => {
                                 <div className="flex">
                                     <ul>
                                         {SafetyRules?.map((rules, i) => (
-                                            <li>{rules}</li>
+                                            <li key={i}>{rules}</li>
                                         ))}
                                     </ul>
                                 </div>

@@ -8,14 +8,11 @@ import { AppFooter } from "./AppFooter";
 import { AppMenu } from "./AppMenu";
 import { AppConfig } from "./AppConfig";
 import ProtectedRoute from "./Routes";
-
-import Dashboard from "./components/Dashboard";
 import ButtonDemo from "./components/ButtonDemo";
 import ChartDemo from "./components/ChartDemo";
 import Documentation from "./components/Documentation";
 import FileDemo from "./components/FileDemo";
 import FloatLabelDemo from "./components/FloatLabelDemo";
-import FormLayoutDemo from "./components/FormLayoutDemo";
 import InputDemo from "./components/InputDemo";
 import ListDemo from "./components/ListDemo";
 import MenuDemo from "./components/MenuDemo";

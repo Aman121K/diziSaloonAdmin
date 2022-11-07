@@ -5,7 +5,7 @@ import { isAuthenticated } from "../services/auth";
 export default function ProtectedRoute() {
     const getAuthRoutes = (routes) => {
         return routes.map((prop, key) => {
-            return isAuthenticated() ? <Route path={prop.path} component={prop.component} /> : <Redirect to="/" />;
+            return isAuthenticated() ? <Route path={prop.path} key={prop.path} component={prop.component} /> : <Redirect to="/" />;
         });
     };
 

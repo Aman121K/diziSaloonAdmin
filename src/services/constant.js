@@ -17,5 +17,6 @@ export default class Constants {
         PROVIDERS: "api/admin/providers",
         BLOCK_UNBLOCK_PROVIDER: "api/admin/enable-disable-provider/",
         GET_PROVIDER: "api/admin/provider/",
+        VERIFY_BUSINESS_PROVIDER: "api/admin/verify-business/",
     };
 }
