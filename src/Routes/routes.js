@@ -5,6 +5,8 @@ import Users from "../components/Users";
 import Providers from "../components/Providers";
 import Profile from "../pages/Profile";
 import ProviderInfo from "../pages/ProviderInfo";
+import Amenities from "../components/Amenities";
+import SafetyRules from "../components/SafetyRules";
 
 export const PrivateRoutes = [
     {
@@ -42,5 +44,15 @@ export const PrivateRoutes = [
         path: "/formlayout",
         name: "FormLayout",
         component: FormLayoutDemo,
+    },
+    {
+        path: "/amenities",
+        name: "Amenities",
+        component: Amenities,
+    },
+    {
+        path: "/safety-rules",
+        name: "SafetyRules",
+        component: SafetyRules,
     },
 ];

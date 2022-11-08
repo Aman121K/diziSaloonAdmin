@@ -18,5 +18,10 @@ export default class Constants {
         BLOCK_UNBLOCK_PROVIDER: "api/admin/enable-disable-provider/",
         GET_PROVIDER: "api/admin/provider/",
         VERIFY_BUSINESS_PROVIDER: "api/admin/verify-business/",
+
+        GET_ALL_AMENITIES: "api/admin/amenities",
+        CREATE_AMENITIES: "api/admin/create-amenities",
+        UPDATE_AMINITIES: "api/admin/update-amenity/",
+        DELETE_AMENITIES: "api/admin/delete-amenities/",
     };
 }
