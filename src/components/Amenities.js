@@ -89,7 +89,7 @@ const Amenities = () => {
                         </div>
 
                         <DataTable value={amenity} responsiveLayout="scroll" paginator rows={8}>
-                            <Column field="amenityName" header="Name" style={{ width: "35%" }}></Column>
+                            <Column field="amenityTitle" header="Name" style={{ width: "35%" }}></Column>
                             <Column header="Image" body={imageBodyTemplate} style={{ width: "35%" }} />
                             <Column header="Action" body={actionTemplate} style={{ width: "25%" }} />
                         </DataTable>

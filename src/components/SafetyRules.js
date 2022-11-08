@@ -87,7 +87,6 @@ const SafetyRules = () => {
                             <h5>Safety Rules</h5>
                             <Button icon="pi pi-plus" label="Create Amenities" onClick={() => setOpenModal(true)} />
                         </div>
-
                         <DataTable value={amenity} responsiveLayout="scroll" paginator rows={8}>
                             <Column field="amenityTitle" header="Name" style={{ width: "35%" }}></Column>
                             <Column header="Image" body={imageBodyTemplate} style={{ width: "35%" }} />

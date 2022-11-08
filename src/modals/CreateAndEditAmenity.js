@@ -12,19 +12,19 @@ const CreateAndEditAmenity = ({ openModal, setOpenModal, getAllAmenity, amenity,
         if (isEdit) {
             setForm((prevState) => ({
                 ...prevState,
-                amenityName: amenity?.amenityName,
+                amenityTitle: amenity?.amenityTitle,
                 amenityImage: amenity?.amenityImage,
             }));
         } else {
             setForm((prevState) => ({
                 ...prevState,
-                amenityName: "",
+                amenityTitle: "",
                 amenityImage: "",
             }));
         }
     }, []);
     const [form, setForm] = useState({
-        amenityName: "",
+        amenityTitle: "",
         amenityImage: "",
     });
     const [errors, setErrors] = useState({});
@@ -44,8 +44,8 @@ const CreateAndEditAmenity = ({ openModal, setOpenModal, getAllAmenity, amenity,
     };
     const validateForm = () => {
         const newErrors = {};
-        if (form.amenityName === "") {
-            newErrors.amenityName = "Amenity name is required";
+        if (form.amenityTitle === "") {
+            newErrors.amenityTitle = "Amenity name is required";
         }
         if (!form.amenityImage) {
             newErrors.amenityImage = "Please upload Image";
@@ -54,7 +54,7 @@ const CreateAndEditAmenity = ({ openModal, setOpenModal, getAllAmenity, amenity,
     };
     const createAmenity = () => {
         const formData = new FormData();
-        formData.append("amenityName", form.amenityName);
+        formData.append("amenityTitle", form.amenityTitle);
         formData.append("amenityImage", form.amenityImage);
         return postData1(Constants.END_POINT.CREATE_AMENITIES, formData)
             .then((res) => {
@@ -69,7 +69,7 @@ const CreateAndEditAmenity = ({ openModal, setOpenModal, getAllAmenity, amenity,
     };
     const updateAmenity = () => {
         const formData = new FormData();
-        formData.append("amenityName", form.amenityName);
+        formData.append("amenityTitle", form.amenityTitle);
         formData.append("amenityImage", form.amenityImage);
         return putData1(Constants.END_POINT.UPDATE_AMINITIES + amenity?._id, formData)
             .then((res) => {
@@ -110,8 +110,8 @@ const CreateAndEditAmenity = ({ openModal, setOpenModal, getAllAmenity, amenity,
         >
             <div>
                 <h6> Name</h6>
-                <InputText id="username" type="text" style={{ width: "100%" }} value={form?.amenityName} onChange={(e) => handleFields("amenityName", e.target.value)} />
-                {errors?.amenityName && (
+                <InputText id="username" type="text" style={{ width: "100%" }} value={form?.amenityTitle} onChange={(e) => handleFields("amenityTitle", e.target.value)} />
+                {errors?.amenityTitle && (
                     <div
                         style={{
                             color: "red",
@@ -120,7 +120,7 @@ const CreateAndEditAmenity = ({ openModal, setOpenModal, getAllAmenity, amenity,
                             marginTop: "10px",
                         }}
                     >
-                        {errors?.amenityName}
+                        {errors?.amenityTitle}
                     </div>
                 )}
             </div>
