@@ -163,7 +163,7 @@ const App = () => {
                 { label: "Users", icon: "pi pi-fw pi-users", to: "/users" },
                 { label: "Providers", icon: "pi pi-fw pi-briefcase", to: "/providers" },
                 { label: "Amenities", icon: "pi pi-fw pi-fw pi-bookmark", to: "/amenities" },
-                { label: "Safety Rules", icon: "pi pi-fw pi-fw pi-bookmark", to: "/safety-rules" },
+                { label: "Safety Rules", icon: "pi pi-fw pi-id-card", to: "/safety-rules" },
             ],
         },
         // {

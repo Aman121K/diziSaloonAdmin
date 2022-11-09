@@ -14,16 +14,20 @@ export default class Constants {
         FORGOT_PASSWORD: "api/admin/forgot-password",
         RESET_PASSWORD: "api/admin/change-forgot-password",
 
+        // Providers
+
         PROVIDERS: "api/admin/providers",
         BLOCK_UNBLOCK_PROVIDER: "api/admin/enable-disable-provider/",
         GET_PROVIDER: "api/admin/provider/",
         VERIFY_BUSINESS_PROVIDER: "api/admin/verify-business/",
 
+        // Amenities
         GET_ALL_AMENITIES: "api/admin/amenities",
         CREATE_AMENITIES: "api/admin/create-amenities",
         UPDATE_AMINITIES: "api/admin/update-amenity/",
         DELETE_AMENITIES: "api/admin/delete-amenities/",
 
+        //safety Rules
         GET_ALL_SAFETY_RULES: "api/admin/safety-rules",
         CREATE_SAFETY_RULES: "api/admin/create-safety-rules",
         UPDATE_SAFETY_RULES: "api/admin/update-safety-rules/",

@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Skeleton } from "primereact/skeleton";
 import { getData, putData } from "../services/http.service";
 import Constants from "../services/constant";
-import list from "../assets/demo/flags/list.png";
 import { Button } from "primereact/button";
-import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import { confirmDialog } from "primereact/confirmdialog";
 import { Toast } from "primereact/toast";
+import CreateAndEditSafetyRules from "../modals/CreateAndEditSafetyRules";
 
 const SafetyRules = () => {
     useEffect(() => {
@@ -17,7 +16,6 @@ const SafetyRules = () => {
     const getAllSafetyRules = () => {
         getData(Constants.END_POINT.GET_ALL_SAFETY_RULES)
             .then((res) => {
-                console.log("res::", res);
                 setSafetyRules(res.data);
             })
             .catch((err) => console.log(err));
@@ -39,7 +37,6 @@ const SafetyRules = () => {
                 if (res.success) {
                     toast.current.show({ severity: "info", summary: "Confirmed", detail: "Safety Rules has been Deleted Succesfully", life: 3000 });
                 }
-                console.log("delete res", res);
                 getAllSafetyRules();
             })
             .catch((err) => console.log(err));
@@ -50,7 +47,6 @@ const SafetyRules = () => {
         toast.current.show({ severity: "warn", summary: "Rejected", detail: "You have rejected", life: 3000 });
     };
     const deletepopup = (event, position) => {
-        console.log("position::0", position);
         confirmDialog({
             message: "Do you want to delete this Safety Rule?",
             icon: "pi pi-info-circle",
@@ -80,13 +76,13 @@ const SafetyRules = () => {
                     <div className="card">
                         <div className="flex justify-content-between mb-4">
                             <h5>Safety Rules</h5>
-                            <Button icon="pi pi-plus" label="Create Amenities" onClick={() => setOpenModal(true)} />
+                            <Button icon="pi pi-plus" label="Create Safety Rules" onClick={() => setOpenModal(true)} />
                         </div>
                         <DataTable value={safetyRules} responsiveLayout="scroll" paginator rows={8}>
-                            <Column field="safetyRuleTitle" header="Name" style={{ width: "70%" }}></Column>
-                            {/* <Column header="Image" body={imageBodyTemplate} style={{ width: "35%" }} /> */}
+                            <Column field="safetyRuleTitle" header="Title" style={{ width: "70%" }}></Column>
                             <Column header="Action" body={actionTemplate} style={{ width: "25%" }} />
                         </DataTable>
+                        {openModal && <CreateAndEditSafetyRules openModal={openModal} setOpenModal={setOpenModal} getAllSafetyRules={getAllSafetyRules} safetyRules={data} id={id} setId={setId} />}
                     </div>
                 </div>
             </div>

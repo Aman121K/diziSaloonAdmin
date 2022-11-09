@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Skeleton } from "primereact/skeleton";
 import { getData, putData } from "../services/http.service";
 import Constants from "../services/constant";
 import list from "../assets/demo/flags/list.png";
 import { Button } from "primereact/button";
 import CreateAndEditAmenity from "../modals/CreateAndEditAmenity";
-import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import { confirmDialog } from "primereact/confirmdialog";
 import { Toast } from "primereact/toast";
 
 const Amenities = () => {
@@ -18,7 +17,6 @@ const Amenities = () => {
     const getAllAmenity = () => {
         getData(Constants.END_POINT.GET_ALL_AMENITIES)
             .then((res) => {
-                console.log("res::", res);
                 setAmenity(res.data);
             })
             .catch((err) => console.log(err));
@@ -40,7 +38,6 @@ const Amenities = () => {
                 if (res.success) {
                     toast.current.show({ severity: "info", summary: "Confirmed", detail: "Amenity has been Deleted Succesfully", life: 3000 });
                 }
-                console.log("delete res", res);
                 getAllAmenity();
             })
             .catch((err) => console.log(err));
@@ -51,7 +48,6 @@ const Amenities = () => {
         toast.current.show({ severity: "warn", summary: "Rejected", detail: "You have rejected", life: 3000 });
     };
     const deletepopup = (event, position) => {
-        console.log("position::0", position);
         confirmDialog({
             message: "Do you want to delete this Amenity?",
             icon: "pi pi-info-circle",
