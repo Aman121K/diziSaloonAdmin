@@ -23,5 +23,10 @@ export default class Constants {
         CREATE_AMENITIES: "api/admin/create-amenities",
         UPDATE_AMINITIES: "api/admin/update-amenity/",
         DELETE_AMENITIES: "api/admin/delete-amenities/",
+
+        GET_ALL_SAFETY_RULES: "api/admin/safety-rules",
+        CREATE_SAFETY_RULES: "api/admin/create-safety-rules",
+        UPDATE_SAFETY_RULES: "api/admin/update-safety-rules/",
+        DELETE_SAFETY_RULES: "api/admin/delete-safety-rules/",
     };
 }

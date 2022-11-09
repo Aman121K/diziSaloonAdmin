@@ -6,7 +6,7 @@ import upload from "../assets/demo/flags/folder.png";
 import { postData1, putData1 } from "../services/http.service";
 import Constants from "../services/constant";
 
-const CreateAndEditAmenity = ({ openModal, setOpenModal, getAllAmenity, amenity, id, setId }) => {
+const CreateAndEditSafetyRules = ({ openModal, setOpenModal, getAllAmenity, amenity, id, setId }) => {
     const isEdit = id;
     useEffect(() => {
         if (isEdit) {
@@ -162,4 +162,4 @@ const CreateAndEditAmenity = ({ openModal, setOpenModal, getAllAmenity, amenity,
     );
 };
 
-export default CreateAndEditAmenity;
+export default CreateAndEditSafetyRules;

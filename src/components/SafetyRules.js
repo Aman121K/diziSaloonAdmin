@@ -6,25 +6,24 @@ import { getData, putData } from "../services/http.service";
 import Constants from "../services/constant";
 import list from "../assets/demo/flags/list.png";
 import { Button } from "primereact/button";
-import CreateAndEditAmenity from "../modals/CreateAndEditAmenity";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { Toast } from "primereact/toast";
 
 const SafetyRules = () => {
     useEffect(() => {
-        getAllAmenity();
+        getAllSafetyRules();
     }, []);
 
-    const getAllAmenity = () => {
-        getData(Constants.END_POINT.GET_ALL_AMENITIES)
+    const getAllSafetyRules = () => {
+        getData(Constants.END_POINT.GET_ALL_SAFETY_RULES)
             .then((res) => {
                 console.log("res::", res);
-                setAmenity(res.data);
+                setSafetyRules(res.data);
             })
             .catch((err) => console.log(err));
     };
 
-    const [amenity, setAmenity] = useState(null);
+    const [safetyRules, setSafetyRules] = useState(null);
     const [openModal, setOpenModal] = useState(null);
     const [id, setId] = useState(null);
     const [data, setData] = useState();
@@ -34,14 +33,14 @@ const SafetyRules = () => {
         setId(rowData?._id);
         setData(rowData);
     };
-    const deleteAmenities = (id) => {
-        putData(Constants.END_POINT.DELETE_AMENITIES + id)
+    const deleteSafetyRules = (id) => {
+        putData(Constants.END_POINT.DELETE_SAFETY_RULES + id)
             .then((res) => {
                 if (res.success) {
-                    toast.current.show({ severity: "info", summary: "Confirmed", detail: "Amenity has been Deleted Succesfully", life: 3000 });
+                    toast.current.show({ severity: "info", summary: "Confirmed", detail: "Safety Rules has been Deleted Succesfully", life: 3000 });
                 }
                 console.log("delete res", res);
-                getAllAmenity();
+                getAllSafetyRules();
             })
             .catch((err) => console.log(err));
     };
@@ -53,18 +52,14 @@ const SafetyRules = () => {
     const deletepopup = (event, position) => {
         console.log("position::0", position);
         confirmDialog({
-            message: "Do you want to delete this Amenity?",
+            message: "Do you want to delete this Safety Rule?",
             icon: "pi pi-info-circle",
             header: "Delete Confirmation",
             acceptClassName: "p-button-danger",
             position,
-            accept: () => deleteAmenities(event, position),
+            accept: () => deleteSafetyRules(event, position),
             reject,
         });
-    };
-
-    const imageBodyTemplate = (rowData) => {
-        return <img src={rowData.amenityImage ? Constants.BASE_URL + rowData.amenityImage : list} alt={rowData.amenityImage} width={50} />;
     };
     const actionTemplate = (rowData) => {
         return (
@@ -87,12 +82,11 @@ const SafetyRules = () => {
                             <h5>Safety Rules</h5>
                             <Button icon="pi pi-plus" label="Create Amenities" onClick={() => setOpenModal(true)} />
                         </div>
-                        <DataTable value={amenity} responsiveLayout="scroll" paginator rows={8}>
-                            <Column field="amenityTitle" header="Name" style={{ width: "35%" }}></Column>
-                            <Column header="Image" body={imageBodyTemplate} style={{ width: "35%" }} />
+                        <DataTable value={safetyRules} responsiveLayout="scroll" paginator rows={8}>
+                            <Column field="safetyRuleTitle" header="Name" style={{ width: "70%" }}></Column>
+                            {/* <Column header="Image" body={imageBodyTemplate} style={{ width: "35%" }} /> */}
                             <Column header="Action" body={actionTemplate} style={{ width: "25%" }} />
                         </DataTable>
-                        {openModal && <CreateAndEditAmenity openModal={openModal} setOpenModal={setOpenModal} getAllAmenity={getAllAmenity} amenity={data} id={id} setId={setId} />}
                     </div>
                 </div>
             </div>
