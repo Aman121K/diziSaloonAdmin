@@ -8,6 +8,7 @@ import list from "../assets/demo/flags/list.png";
 import { Button } from "primereact/button";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { Toast } from "primereact/toast";
+import CreateAndEditSafetyRules from "../modals/CreateAndEditSafetyRules"
 
 const SafetyRules = () => {
     useEffect(() => {
@@ -80,13 +81,15 @@ const SafetyRules = () => {
                     <div className="card">
                         <div className="flex justify-content-between mb-4">
                             <h5>Safety Rules</h5>
-                            <Button icon="pi pi-plus" label="Create Amenities" onClick={() => setOpenModal(true)} />
+                            <Button icon="pi pi-plus" label="Create Safety Rules" onClick={() => setOpenModal(true)} />
                         </div>
                         <DataTable value={safetyRules} responsiveLayout="scroll" paginator rows={8}>
                             <Column field="safetyRuleTitle" header="Name" style={{ width: "70%" }}></Column>
-                            {/* <Column header="Image" body={imageBodyTemplate} style={{ width: "35%" }} /> */}
+                            
                             <Column header="Action" body={actionTemplate} style={{ width: "25%" }} />
                         </DataTable>
+                        {openModal && <CreateAndEditSafetyRules openModal={openModal} setOpenModal={setOpenModal} getAllSafetyRules={getAllSafetyRules} safetyRules={data} id={id} setId={setId} />}
+                        
                     </div>
                 </div>
             </div>
