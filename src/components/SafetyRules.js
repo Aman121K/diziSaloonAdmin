@@ -79,7 +79,8 @@ const SafetyRules = () => {
                             <Button icon="pi pi-plus" label="Create Safety Rules" onClick={() => setOpenModal(true)} />
                         </div>
                         <DataTable value={safetyRules} responsiveLayout="scroll" paginator rows={8}>
-                            <Column field="safetyRuleTitle" header="Title" style={{ width: "70%" }}></Column>
+                            <Column field="safetyRuleTitle" header="Name" style={{ width: "70%" }}></Column>
+
                             <Column header="Action" body={actionTemplate} style={{ width: "25%" }} />
                         </DataTable>
                         {openModal && <CreateAndEditSafetyRules openModal={openModal} setOpenModal={setOpenModal} getAllSafetyRules={getAllSafetyRules} safetyRules={data} id={id} setId={setId} />}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
+import upload from "../assets/demo/flags/folder.png";
 import { postData, putData } from "../services/http.service";
 import Constants from "../services/constant";
 
@@ -40,7 +41,7 @@ const CreateAndEditSafetyRules = ({ openModal, setOpenModal, getAllSafetyRules, 
     const validateForm = () => {
         const newErrors = {};
         if (form.safetyRuleTitle === "") {
-            newErrors.safetyRuleTitle = "safetyRules name is required";
+            newErrors.safetyRuleTitle = "Safety Rules  name is required";
         }
 
         return newErrors;
@@ -81,7 +82,7 @@ const CreateAndEditSafetyRules = ({ openModal, setOpenModal, getAllSafetyRules, 
 
     return (
         <Dialog
-            header={isEdit ? "Edit  SafetyRules" : "Add  SafetyRules"}
+            header={isEdit ? "Edit  Safety Rules" : "Add  Safety Rules"}
             visible={openModal}
             style={{ width: "30vw" }}
             modal
@@ -92,7 +93,7 @@ const CreateAndEditSafetyRules = ({ openModal, setOpenModal, getAllSafetyRules, 
             }}
         >
             <div>
-                <h6>Title</h6>
+                <h6>Name</h6>
                 <InputText id="username" type="text" style={{ width: "100%" }} value={form?.safetyRuleTitle} onChange={(e) => handleFields("safetyRuleTitle", e.target.value)} />
                 {errors?.safetyRuleTitle && (
                     <div
