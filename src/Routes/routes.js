@@ -7,6 +7,8 @@ import Profile from "../pages/Profile";
 import ProviderInfo from "../pages/ProviderInfo";
 import Amenities from "../components/Amenities";
 import SafetyRules from "../components/SafetyRules";
+import Reports from "../components/Reports";
+import Feedback from "../components/Feedback";
 
 export const PrivateRoutes = [
     {
@@ -54,5 +56,15 @@ export const PrivateRoutes = [
         path: "/safety-rules",
         name: "SafetyRules",
         component: SafetyRules,
+    },
+    {
+        path: "/reports",
+        name: "Reports",
+        component: Reports,
+    },
+    {
+        path: "/feedback",
+        name: "FeedBack",
+        component: Feedback,
     },
 ];

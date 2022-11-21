@@ -32,5 +32,8 @@ export default class Constants {
         CREATE_SAFETY_RULES: "api/admin/create-safety-rules",
         UPDATE_SAFETY_RULES: "api/admin/update-safety-rules/",
         DELETE_SAFETY_RULES: "api/admin/delete-safety-rules/",
+
+        GET_ALL_BUSINESS_REPORTS: "api/admin/get-all-business-reports",
+        GET_ALL_PROVIDER_FEEDBACK: "api/admin/feedbacks",
     };
 }
