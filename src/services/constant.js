@@ -35,5 +35,6 @@ export default class Constants {
 
         GET_ALL_BUSINESS_REPORTS: "api/admin/get-all-business-reports",
         GET_ALL_PROVIDER_FEEDBACK: "api/admin/feedbacks",
+        GET_ALL_USERS: "api/admin/users",
     };
 }

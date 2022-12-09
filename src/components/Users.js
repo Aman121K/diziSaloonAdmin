@@ -5,6 +5,7 @@ import { getData } from "../services/http.service";
 import Constants from "../services/constant";
 import profile from "../assets/demo/flags/profile.png";
 import { Button } from "primereact/button";
+import { Link } from "react-router-dom";
 
 const Users = () => {
     useEffect(() => {
@@ -36,9 +37,14 @@ const Users = () => {
     const statusBodyTemplate2 = (rowData) => {
         return <span className={`product-badge status-${rowData.isOnline ? "instock" : "outofstock"}`}>{rowData.isOnline ? "Online" : "Offline"}</span>;
     };
-    const blockBodyTemplate = (rowData) => {
+    const ActionBodyTemplate = (rowData) => {
         return (
-            <div className="">
+            <div className=" flex ">
+                <Link to={`/user-view/${rowData?._id}`}>
+                    <Button type="button" className="p-buuton-raised p-button-rounded p-button-outlined mx-2">
+                        View
+                    </Button>
+                </Link>
                 <Button type="button" className={`p-button-raised p-button-rounded  p-button-outlined ${rowData?.isDeleted ? "p-button-success" : "p-button-danger"}`} onClick={() => blockUser(rowData?._id)}>
                     {rowData?.isDeleted ? "Unblock" : "Block"}
                 </Button>
@@ -66,7 +72,7 @@ const Users = () => {
                     <Column field="mobile" header="Mobile" sortable />
                     <Column header="Image" body={imageBodyTemplate} />
                     <Column field="isOnline" header="Status" sortable body={statusBodyTemplate2} />
-                    <Column field="block" header="Action" body={blockBodyTemplate} />
+                    <Column field="block" header="Action" body={ActionBodyTemplate} />
                 </DataTable>
             </div>
         </div>

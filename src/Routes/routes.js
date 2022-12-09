@@ -9,6 +9,7 @@ import Amenities from "../components/Amenities";
 import SafetyRules from "../components/SafetyRules";
 import Reports from "../components/Reports";
 import Feedback from "../components/Feedback";
+import UserView from "../components/UserView";
 
 export const PrivateRoutes = [
     {
@@ -66,5 +67,10 @@ export const PrivateRoutes = [
         path: "/feedback",
         name: "FeedBack",
         component: Feedback,
+    },
+    {
+        path: "/user-view/:id",
+        name: "UserView",
+        component: UserView,
     },
 ];
