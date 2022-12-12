@@ -15,6 +15,7 @@ import business from "../../src/assets/demo/flags/business.png";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { Image } from "primereact/image";
+import { convertTime24to12 } from "../utils";
 
 const ProviderInfo = () => {
     const [info, setInfo] = useState({});
@@ -47,16 +48,7 @@ const ProviderInfo = () => {
             .catch((err) => console.log(err));
     };
     const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const convertTime24to12 = (time24h) => {
-        let time = time24h.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time24h];
 
-        if (time.length > 1) {
-            time = time.slice(1, -1);
-            time[5] = +time[0] < 12 ? "AM" : "PM";
-            time[0] = +time[0] % 12 || 12;
-        }
-        return time.join("");
-    };
     const formatCurrency = (value) => {
         return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
     };

@@ -27,7 +27,7 @@ const Users = () => {
             .then((res) => {
                 getAllUsers();
             })
-            .catch((err) => console.log);
+            .catch((err) => console.log(err));
     };
     const [users, setUsers] = useState([]);
 
