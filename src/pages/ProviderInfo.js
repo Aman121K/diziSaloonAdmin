@@ -16,14 +16,41 @@ import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { Image } from "primereact/image";
 import { convertTime24to12 } from "../utils";
+import { Calendar } from "primereact/calendar";
+import moment from "moment";
 
 const ProviderInfo = () => {
     const [info, setInfo] = useState({});
+    const [bookings, setBookings] = useState();
+    const [filterdate, setFilterDate] = useState({
+        bookingsFrom: null,
+        bookingsTo: null,
+    });
     const { id } = useParams();
 
     useEffect(() => {
         getAllProfile();
+        if (filterdate?.bookingsTo) {
+            getProviderBooking1();
+        }
+    }, [filterdate]);
+
+    useEffect(() => {
+        getProviderBooking();
     }, []);
+    function dateTemplate(date) {
+        return date.day;
+    }
+    const handleChange = (name) => (event) => {
+        let value = event.target.value;
+        setFilterDate({ ...filterdate, [name]: value });
+    };
+    const bookingDateTemplate = (rowData) => {
+        return moment(rowData?.bookingDate).format("DD-MM-YYYY");
+    };
+    let { bookingsFrom, bookingsTo } = filterdate;
+    bookingsFrom = moment(new Date(bookingsFrom)).format("DD-MM-YYYY");
+    bookingsTo = moment(new Date(bookingsTo)).format("DD-MM-YYYY");
 
     const getAllProfile = () => {
         getData(Constants.END_POINT.GET_PROVIDER + id)
@@ -31,6 +58,25 @@ const ProviderInfo = () => {
                 if (res.success) {
                     setInfo(res?.data);
                 }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    const getProviderBooking = () => {
+        postData(Constants.END_POINT.GET_PROVIDER_BOOKINGS + id)
+            .then((res) => {
+                setBookings(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const getProviderBooking1 = () => {
+        postData(Constants.END_POINT.GET_PROVIDER_BOOKINGS + id, { bookingsFrom: bookingsFrom, bookingsTo: bookingsTo })
+            .then((res) => {
+                setBookings(res.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -59,59 +105,100 @@ const ProviderInfo = () => {
     const durationBodyTemplate = (rowData) => {
         return rowData?.durationTime + "min";
     };
+    const startTime = (rowData) => {
+        return convertTime24to12(rowData?.startTime);
+    };
+    const userBodyTemplate = (rowData) => {
+        return rowData?.provider?.firstName;
+    };
+    const statusbodyTemplate = (rowData) => {
+        return <span className={`product-badge status-${rowData.status === "CONFIRMED" ? "instock" : "outofstock"}`}>{rowData.status}</span>;
+    };
     const message = useRef();
     return (
         <div className="grid">
-            <div className="col-12 md:col-8 mx-auto">
-                <div className="card">
-                    <h3>Service Information </h3>
-                    <Toast ref={toast} />
+            <div className="col-12 md:col-8 mx-auto ">
+                <Accordion multiple>
+                    <AccordionTab header="Services">
+                        {info?.services?.length > 0 ? (
+                            <div className="">
+                                <h3>Service Information </h3>
+                                <Toast ref={toast} />
+                                <Messages ref={message} />
+                                <DataTable value={info?.services}>
+                                    <Column field="serviceName" header="Service Name"></Column>
+                                    <Column field="price" body={priceBodyTemplate} header="Price"></Column>
+                                    <Column field="durationTime" body={durationBodyTemplate} header="Duration Time"></Column>
+                                </DataTable>
+                            </div>
+                        ) : (
+                            "No service Found"
+                        )}
+                    </AccordionTab>
 
-                    <Messages ref={message} />
-                    {info?.services?.length > 0 ? (
-                        <DataTable value={info?.services}>
-                            <Column field="serviceName" header="Service Name"></Column>
-                            <Column field="price" body={priceBodyTemplate} header="Price"></Column>
-                            <Column field="durationTime" body={durationBodyTemplate} header="Duration Time"></Column>
-                        </DataTable>
-                    ) : (
-                        "No services Found"
-                    )}
-                </div>
-                {info?.documents && (
-                    <div className="card">
-                        <>
-                            <div className="flex">
-                                <h3>Documents </h3>
-                                <div className="ml-4">
-                                    <Button type="button" className="p-button-raised p-button-rounded  p-button-outlined p-button-info" onClick={() => verifyBusinessProvider("VERIFIED")}>
-                                        Approve
-                                    </Button>
+                    <AccordionTab header="Bookings">
+                        {bookings?.length ? (
+                            <>
+                                <div className="flex">
+                                    <div>
+                                        <label>From Date</label>
+                                        <Calendar name="bookingsFrom" value={filterdate?.bookingsFrom} onChange={handleChange("bookingsFrom")} dateTemplate={dateTemplate} />
+                                    </div>
+                                    <div>
+                                        <label>To Date</label>
+                                        <Calendar name="bookingsTo" value={filterdate?.bookingsTo} onChange={handleChange("bookingsTo")} dateTemplate={dateTemplate} />
+                                    </div>
                                 </div>
+
+                                <DataTable value={bookings}>
+                                    <Column body={bookingDateTemplate} header="Booking Date"></Column>
+                                    <Column body={startTime} header="Start Time"></Column>
+                                    <Column body={statusbodyTemplate} header="Status"></Column>
+                                    <Column body={userBodyTemplate} header="Provider"></Column>
+                                    <Column field="duration" header="Duration"></Column>
+                                </DataTable>
+                            </>
+                        ) : (
+                            "No Bookings Found"
+                        )}
+                    </AccordionTab>
+                    <AccordionTab header="Documents">
+                        {info?.documents ? (
+                            <>
+                                <div className="flex">
+                                    <h3>Documents </h3>
+                                    <div className="ml-4">
+                                        <Button type="button" className="p-button-raised p-button-rounded  p-button-outlined p-button-info" onClick={() => verifyBusinessProvider("VERIFIED")}>
+                                            Approve
+                                        </Button>
+                                    </div>
+                                    <div>
+                                        <Button type="button" className="p-button-raised p-button-rounded  p-button-outlined p-button-danger ml-2" onClick={() => verifyBusinessProvider("REJECTED")}>
+                                            Reject
+                                        </Button>
+                                    </div>
+                                </div>
+
                                 <div>
-                                    <Button type="button" className="p-button-raised p-button-rounded  p-button-outlined p-button-danger ml-2" onClick={() => verifyBusinessProvider("REJECTED")}>
-                                        Reject
-                                    </Button>
+                                    <div className=" card my-4 text-center">
+                                        <h4>Front</h4>
+                                        {info?.documents?.front ? <Image src={Constants?.BASE_URL + info?.documents?.front} alt="galleria" width="150px" preview /> : null}
+                                    </div>
+                                    <div className=" card my-4 text-center">
+                                        <h4>Back</h4>
+                                        {info?.documents?.back ? <Image src={Constants?.BASE_URL + info?.documents?.back} alt="galleria" width="150px" preview /> : null}
+                                    </div>
+                                    <div className=" card my-4 text-center">
+                                        <h4>Selfie</h4>
+                                        {info?.documents?.selfie ? <Image src={Constants?.BASE_URL + info?.documents?.selfie} alt="galleria" width="150px" preview /> : null}
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div>
-                                <div className=" card my-4 text-center">
-                                    <h4>Front</h4>
-                                    {info?.documents?.front ? <Image src={Constants?.BASE_URL + info?.documents?.front} alt="galleria" width="150px" preview /> : null}
-                                </div>
-                                <div className=" card my-4 text-center">
-                                    <h4>Back</h4>
-                                    {info?.documents?.back ? <Image src={Constants?.BASE_URL + info?.documents?.back} alt="galleria" width="150px" preview /> : null}
-                                </div>
-                                <div className=" card my-4 text-center">
-                                    <h4>Selfie</h4>
-                                    {info?.documents?.selfie ? <Image src={Constants?.BASE_URL + info?.documents?.selfie} alt="galleria" width="150px" preview /> : null}
-                                </div>
-                            </div>
-                        </>
-                    </div>
-                )}
+                            </>
+                        ) : (
+                            "No Documents Found"
+                        )}
+                    </AccordionTab>
+                </Accordion>
             </div>
             <div className="col-12 md:col-4">
                 <div className="card">
