@@ -40,5 +40,6 @@ export default class Constants {
         GET_USER_BOOKINGS: "api/admin/user/bookings/",
         GET_PROVIDER_BOOKINGS: "api/admin/provider/bookings/",
         GET_COUNT: "api/admin/count",
+        ALL_BOOKINGS: "api/admin/all-bookings",
     };
 }

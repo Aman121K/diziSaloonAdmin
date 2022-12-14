@@ -6,8 +6,10 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ProductService } from "../service/ProductService";
 import Constants from "../services/constant";
-import { getData } from "../services/http.service";
+import { getData, postData } from "../services/http.service";
 import { Calendar } from "primereact/calendar";
+import moment from "moment";
+import { convertTime24to12 } from "../utils";
 
 const lineData = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -37,6 +39,15 @@ const Dashboard = (props) => {
     const menu1 = useRef(null);
     const menu2 = useRef(null);
     const [lineOptions, setLineOptions] = useState(null);
+    const [booking, setBooking] = useState();
+    const [filterdate, setFilterDate] = useState({
+        bookingsFrom: null,
+        bookingsTo: null,
+    });
+    let { bookingsFrom, bookingsTo } = filterdate;
+    bookingsFrom = moment(new Date(bookingsFrom)).format("DD-MM-YYYY");
+    bookingsTo = moment(new Date(bookingsTo)).format("DD-MM-YYYY");
+    console.log(bookingsFrom, bookingsTo);
 
     const applyLightTheme = () => {
         const lineOptions = {
@@ -103,12 +114,13 @@ const Dashboard = (props) => {
     };
     useEffect(() => {
         getCounts();
+        getAllBokings();
     }, []);
-
     useEffect(() => {
-        const productService = new ProductService();
-        productService.getProductsSmall().then((data) => setProducts(data));
-    }, []);
+        if (filterdate?.bookingsTo) {
+            getAllBokings1();
+        }
+    }, [filterdate]);
 
     useEffect(() => {
         if (props.colorMode === "light") {
@@ -118,8 +130,22 @@ const Dashboard = (props) => {
         }
     }, [props.colorMode]);
 
-    const formatCurrency = (value) => {
-        return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
+    const getAllBokings = () => {
+        postData(Constants.END_POINT.ALL_BOOKINGS)
+            .then((res) => {
+                setBooking(res.data);
+                console.log(res);
+            })
+            .catch((err) => console.log(err));
+    };
+
+    const getAllBokings1 = () => {
+        postData(Constants.END_POINT.ALL_BOOKINGS, { bookingsFrom: bookingsFrom, bookingsTo: bookingsTo })
+            .then((res) => {
+                setBooking(res.data);
+                console.log(res);
+            })
+            .catch((err) => console.log(err));
     };
     const getCounts = () => {
         getData(Constants.END_POINT.GET_COUNT)
@@ -130,6 +156,27 @@ const Dashboard = (props) => {
     };
     const dateTemplate = (date) => {
         return date.day;
+    };
+    console.log(booking);
+
+    const bookingDateTemplate = (rowData) => {
+        return moment(rowData?.bookingDate).format("DD-MM-YYYY");
+    };
+    const startTime = (rowData) => {
+        return convertTime24to12(rowData?.startTime);
+    };
+    const statusbodyTemplate = (rowData) => {
+        return <span className={`product-badge status-${rowData.status === "CONFIRMED" ? "instock" : "outofstock"}`}>{rowData.status}</span>;
+    };
+    const userBodyTemplate = (rowData) => {
+        return rowData?.provider ? rowData?.provider?.firstName : "-";
+    };
+    const userBodyTemplate1 = (rowData) => {
+        return rowData?.user ? rowData?.user?.firstName : rowData?.client?.firstName + "*";
+    };
+    const handleChange = (name) => (event) => {
+        let value = event.target.value;
+        setFilterDate({ ...filterdate, [name]: value });
     };
 
     return (
@@ -217,19 +264,20 @@ const Dashboard = (props) => {
                         <div className="flex">
                             <div>
                                 <label>From Date</label>
-                                <Calendar name="bookingsFrom" dateTemplate={dateTemplate} />
+                                <Calendar value={filterdate?.bookingsFrom} onChange={handleChange("bookingsFrom")} name="bookingsFrom" dateTemplate={dateTemplate} />
                             </div>
                             <div>
                                 <label>To Date</label>
-                                <Calendar name="bookingsTo" dateTemplate={dateTemplate} />
+                                <Calendar value={filterdate?.bookingsTo} name="bookingsTo" onChange={handleChange("bookingsTo")} dateTemplate={dateTemplate} />
                             </div>
                         </div>
 
-                        <DataTable>
-                            <Column header="Booking Date"></Column>
-                            <Column header="Start Time"></Column>
-                            <Column header="Status"></Column>
-                            <Column header="Provider"></Column>
+                        <DataTable value={booking} rows={5} paginator responsiveLayout="scroll">
+                            <Column body={bookingDateTemplate} header="Booking Date"></Column>
+                            <Column body={startTime} header="Start Time"></Column>
+                            <Column body={statusbodyTemplate} header="Status"></Column>
+                            <Column body={userBodyTemplate} header="Provider"></Column>
+                            <Column body={userBodyTemplate1} header="User"></Column>
                             <Column field="duration" header="Duration"></Column>
                         </DataTable>
                     </>
@@ -328,7 +376,7 @@ const Dashboard = (props) => {
 
             <div className="col-12 xl:col-6">
                 <div className="card">
-                    <h5>Sales Overview</h5>
+                    <h5>Bookings Overview</h5>
                     <Chart type="line" data={lineData} options={lineOptions} />
                 </div>
 
