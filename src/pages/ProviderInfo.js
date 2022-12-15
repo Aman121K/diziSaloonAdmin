@@ -18,6 +18,7 @@ import { Image } from "primereact/image";
 import { convertTime24to12 } from "../utils";
 import { Calendar } from "primereact/calendar";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const ProviderInfo = () => {
     const [info, setInfo] = useState({});
@@ -29,13 +30,13 @@ const ProviderInfo = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        getAllProfile();
         if (filterdate?.bookingsTo) {
             getProviderBooking1();
         }
     }, [filterdate]);
 
     useEffect(() => {
+        getAllProfile();
         getProviderBooking();
     }, []);
     function dateTemplate(date) {
@@ -90,6 +91,7 @@ const ProviderInfo = () => {
                 const msg = res?.data?.isVerified;
 
                 toast.current.show({ severity: "success", summary: ` Status ${msg === "VERIFIED" ? "Approved" : "Rejected"}`, detail: "verification status updated Successfully" });
+                getAllProfile();
             })
             .catch((err) => console.log(err));
     };
@@ -115,15 +117,16 @@ const ProviderInfo = () => {
         return <span className={`product-badge status-${rowData.status === "CONFIRMED" ? "instock" : "outofstock"}`}>{rowData.status}</span>;
     };
     const message = useRef();
+    console.log(info);
     return (
         <div className="grid">
             <div className="col-12 md:col-8 mx-auto ">
+                <Toast ref={toast} />
                 <Accordion multiple>
                     <AccordionTab header="Services">
                         {info?.services?.length > 0 ? (
                             <div className="">
                                 <h3>Service Information </h3>
-                                <Toast ref={toast} />
                                 <Messages ref={message} />
                                 <DataTable value={info?.services}>
                                     <Column field="serviceName" header="Service Name"></Column>
@@ -168,29 +171,46 @@ const ProviderInfo = () => {
                                 <div className="flex">
                                     <h3>Documents </h3>
                                     <div className="ml-4">
-                                        <Button type="button" className="p-button-raised p-button-rounded  p-button-outlined p-button-info" onClick={() => verifyBusinessProvider("VERIFIED")}>
+                                        <Button
+                                            type="button"
+                                            className="p-button-raised p-button-rounded  p-button-outlined p-button-info"
+                                            onClick={() => {
+                                                verifyBusinessProvider("VERIFIED");
+                                            }}
+                                        >
                                             Approve
                                         </Button>
                                     </div>
                                     <div>
-                                        <Button type="button" className="p-button-raised p-button-rounded  p-button-outlined p-button-danger ml-2" onClick={() => verifyBusinessProvider("REJECTED")}>
+                                        <Button
+                                            type="button"
+                                            className="p-button-raised p-button-rounded  p-button-outlined p-button-danger ml-2"
+                                            onClick={() => {
+                                                verifyBusinessProvider("REJECTED");
+                                                getAllProfile();
+                                            }}
+                                        >
                                             Reject
                                         </Button>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <div className=" card my-4 text-center">
-                                        <h4>Front</h4>
-                                        {info?.documents?.front ? <Image src={Constants?.BASE_URL + info?.documents?.front} alt="galleria" width="150px" preview /> : null}
-                                    </div>
-                                    <div className=" card my-4 text-center">
-                                        <h4>Back</h4>
-                                        {info?.documents?.back ? <Image src={Constants?.BASE_URL + info?.documents?.back} alt="galleria" width="150px" preview /> : null}
-                                    </div>
-                                    <div className=" card my-4 text-center">
-                                        <h4>Selfie</h4>
-                                        {info?.documents?.selfie ? <Image src={Constants?.BASE_URL + info?.documents?.selfie} alt="galleria" width="150px" preview /> : null}
+                                    <div className=" card my-4 text-center ">
+                                        <div className="flex justify-content-around">
+                                            <div>
+                                                <div>Front</div>
+                                                {info?.documents?.front ? <Image src={Constants?.BASE_URL + info?.documents?.front} alt="galleria" width="150px" preview /> : null}
+                                            </div>
+                                            <div>
+                                                <div>Back</div>
+                                                {info?.documents?.back ? <Image src={Constants?.BASE_URL + info?.documents?.back} alt="galleria" width="150px" preview /> : null}
+                                            </div>
+                                            <div>
+                                                <div>Selfie</div>
+                                                {info?.documents?.selfie ? <Image src={Constants?.BASE_URL + info?.documents?.selfie} alt="galleria" width="150px" preview /> : null}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </>
@@ -211,7 +231,7 @@ const ProviderInfo = () => {
                             <i className="pi pi-tag mr-2" />
                             <span className="font-semibold">business</span>
                         </div>
-                        <span className={`product-badge status-${info?.business?.isVerified === "VERIFIED" ? "instock" : "outofstock"}`}> {info?.business?.isVerified == "VERIFIED" ? "Verified" : "Rejected"}</span>
+                        <span className={`customer-badge status-${info?.business?.isVerified === "VERIFIED" ? "qualified" : info?.business?.isVerified === "SUBMITTED" ? "proposal" : info?.business?.isVerified === "NOT_VERIFIED" ? "NEW" : "unqualified"}`}> {info?.business?.isVerified}</span>
                     </div>
                     <div className="text-center">
                         <img src={info?.business?.image ? Constants?.BASE_URL + info?.business?.image : business} alt="" className="w-9 shadow-2 my-3 mx-0" />
@@ -228,23 +248,46 @@ const ProviderInfo = () => {
                             </AccordionTab>
                             <AccordionTab header="Working Hours">
                                 {info?.business?.timings?.map((timing, i) => {
+                                    console.log(timing?.isClosed);
                                     return (
-                                        <div className="col-12 flex">
-                                            {weekDays[timing.weekDay]}
-                                            <span>&nbsp; : </span>
-                                            <div>
-                                                {convertTime24to12(timing?.startTime)} - {convertTime24to12(timing?.endTime)}
-                                            </div>
+                                        <div className="col-6 flex">
+                                            <div className="w-25">{weekDays[timing.weekDay]}</div>
+                                            <div className="w-75">: {timing?.isClosed ? <span className="text-danger">Closed</span> : convertTime24to12(timing?.startTime) + "-" + convertTime24to12(timing?.endTime)}</div>
                                         </div>
                                     );
                                 })}
                             </AccordionTab>
                             <AccordionTab header="Social Media and Share">
-                                <div className="flex">
-                                    <img src={Instagram} alt="" width="55px"></img>
-                                    <img src={FaceBook} alt="" width="55px"></img>
-                                    <img src={Website} alt="" width="55px"></img>
-                                    <img src={Share} alt="" width="55px"></img>
+                                <div className="flex justify-content-around">
+                                    {info?.business?.instagram ? (
+                                        <a href={info?.business?.instagram} target="blank">
+                                            <img src={Instagram} alt="" width="55px"></img>
+                                        </a>
+                                    ) : (
+                                        <img src={Instagram} alt="" width="55px"></img>
+                                    )}
+                                    {info?.business?.facebook ? (
+                                        <a href={info?.business?.facebook} target="blank">
+                                            <img src={FaceBook} alt="" width="55px"></img>
+                                        </a>
+                                    ) : (
+                                        <img src={FaceBook} alt="" width="55px"></img>
+                                    )}
+                                    {info?.business?.website ? (
+                                        <a href={info?.business?.website} target="blank">
+                                            <img src={Website} alt="" width="55px"></img>
+                                        </a>
+                                    ) : (
+                                        <img src={Website} alt="" width="55px"></img>
+                                    )}
+
+                                    {info?.business?.share ? (
+                                        <a href={info?.business?.share} target="blank">
+                                            <img src={Share} alt="" width="55px"></img>
+                                        </a>
+                                    ) : (
+                                        <img src={Share} alt="" width="55px"></img>
+                                    )}
                                 </div>
                             </AccordionTab>
                             <AccordionTab header="Safety Rules">

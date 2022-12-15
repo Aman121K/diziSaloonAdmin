@@ -38,7 +38,7 @@ const Reports = () => {
                     </div>
 
                     <DataTable value={data} responsiveLayout="scroll" paginator rows={8}>
-                        <Column field="reportTitle" header="Name" style={{ width: "35%" }}></Column>
+                        <Column field="reportTitle" header="Title" style={{ width: "35%" }}></Column>
                         <Column field="reportComment" header="Comment" style={{ width: "35%" }} />
                         <Column header="Business Name" body={actionTemplate} style={{ width: "25%" }} />
                         {/* <Column field="businessId.businessName" header="Business Name" style={{ width: "35%" }} /> */}

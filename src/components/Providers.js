@@ -28,6 +28,7 @@ const Provider = () => {
             .catch((err) => console.log);
     };
     const [users, setUsers] = useState();
+    console.log("users::", users);
 
     const statusBodyTemplate2 = (rowData) => {
         return <span className={`product-badge status-${rowData.isOnline ? "instock" : "outofstock"}`}>{rowData.isOnline ? "Online" : "Offline"}</span>;

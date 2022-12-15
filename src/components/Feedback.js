@@ -32,9 +32,9 @@ const Feedback = () => {
                     </div>
 
                     <DataTable value={data} responsiveLayout="scroll" paginator rows={8}>
-                        <Column header="Is Satisfied" body={statusBodyTemplate} style={{ width: "25%" }} />
-                        <Column field="description" header="Comment" style={{ width: "35%" }} />
                         <Column header="Provider Name" body={actionTemplate} style={{ width: "25%" }} />
+                        <Column field="description" header="Comment" style={{ width: "35%" }} />
+                        <Column header="Is Satisfied" body={statusBodyTemplate} style={{ width: "25%" }} />
                     </DataTable>
                 </div>
             </div>
