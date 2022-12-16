@@ -10,6 +10,7 @@ import { getData, postData } from "../services/http.service";
 import { Calendar } from "primereact/calendar";
 import moment from "moment";
 import { convertTime24to12 } from "../utils";
+import { Link } from "react-router-dom";
 
 const lineData = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -169,7 +170,7 @@ const Dashboard = (props) => {
         return <span className={`product-badge status-${rowData.status === "CONFIRMED" ? "instock" : "outofstock"}`}>{rowData.status}</span>;
     };
     const userBodyTemplate = (rowData) => {
-        return rowData?.provider ? rowData?.provider?.firstName : "-";
+        return <Link to={`/providerInfo/${rowData?._id}`}>{rowData?.provider ? rowData?.provider?.firstName : "-"}</Link>;
     };
     const userBodyTemplate1 = (rowData) => {
         return rowData?.user ? rowData?.user?.firstName : rowData?.client?.firstName + "*";
@@ -177,6 +178,24 @@ const Dashboard = (props) => {
     const handleChange = (name) => (event) => {
         let value = event.target.value;
         setFilterDate({ ...filterdate, [name]: value });
+    };
+    const bookingTemplate = (rowData) => {
+        console.log(rowData?.business?.businessName);
+        return (
+            <Link
+                to={{
+                    pathname: `/booking-detail/${rowData?._id}`,
+                    state: {
+                        booking: rowData?.bussiness,
+                    },
+                }}
+            >
+                Business
+            </Link>
+            // <Link to={pathname} state>
+            //     {rowData?.provider ? rowData?.provider?.firstName : "-"}
+            // </Link>
+        );
     };
 
     return (
@@ -273,6 +292,7 @@ const Dashboard = (props) => {
                         </div>
 
                         <DataTable value={booking} rows={5} paginator responsiveLayout="scroll">
+                            <Column body={bookingTemplate} header="business Name"></Column>
                             <Column body={bookingDateTemplate} header="Booking Date"></Column>
                             <Column body={startTime} header="Start Time"></Column>
                             <Column body={statusbodyTemplate} header="Status"></Column>

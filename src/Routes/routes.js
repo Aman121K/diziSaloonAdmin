@@ -10,6 +10,7 @@ import SafetyRules from "../components/SafetyRules";
 import Reports from "../components/Reports";
 import Feedback from "../components/Feedback";
 import UserView from "../components/UserView";
+import BookingDetails from "../pages/BookingDetails";
 
 export const PrivateRoutes = [
     {
@@ -72,5 +73,10 @@ export const PrivateRoutes = [
         path: "/user-view/:id",
         name: "UserView",
         component: UserView,
+    },
+    {
+        path: "/booking-detail/:id",
+        name: "BookingDetail",
+        component: BookingDetails,
     },
 ];

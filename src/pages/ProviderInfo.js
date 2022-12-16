@@ -19,6 +19,7 @@ import { convertTime24to12 } from "../utils";
 import { Calendar } from "primereact/calendar";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import MapContainer from "./MapContainer";
 
 const ProviderInfo = () => {
     const [info, setInfo] = useState({});
@@ -121,104 +122,107 @@ const ProviderInfo = () => {
     return (
         <div className="grid">
             <div className="col-12 md:col-8 mx-auto ">
-                <Toast ref={toast} />
-                <Accordion multiple>
-                    <AccordionTab header="Services">
-                        {info?.services?.length > 0 ? (
-                            <div className="">
-                                <h3>Service Information </h3>
-                                <Messages ref={message} />
-                                <DataTable value={info?.services}>
-                                    <Column field="serviceName" header="Service Name"></Column>
-                                    <Column field="price" body={priceBodyTemplate} header="Price"></Column>
-                                    <Column field="durationTime" body={durationBodyTemplate} header="Duration Time"></Column>
-                                </DataTable>
-                            </div>
-                        ) : (
-                            "No service Found"
-                        )}
-                    </AccordionTab>
-
-                    <AccordionTab header="Bookings">
-                        {bookings?.length ? (
-                            <>
-                                <div className="flex">
-                                    <div>
-                                        <label>From Date</label>
-                                        <Calendar name="bookingsFrom" value={filterdate?.bookingsFrom} onChange={handleChange("bookingsFrom")} dateTemplate={dateTemplate} />
-                                    </div>
-                                    <div>
-                                        <label>To Date</label>
-                                        <Calendar name="bookingsTo" value={filterdate?.bookingsTo} onChange={handleChange("bookingsTo")} dateTemplate={dateTemplate} />
-                                    </div>
+                <div className="">
+                    <Toast ref={toast} />
+                    <MapContainer coordinates={info?.business?.location?.coordinates} />
+                    <Accordion multiple className="mt-3">
+                        <AccordionTab header="Services">
+                            {info?.services?.length > 0 ? (
+                                <div className="">
+                                    <h3>Service Information </h3>
+                                    <Messages ref={message} />
+                                    <DataTable value={info?.services}>
+                                        <Column field="serviceName" header="Service Name"></Column>
+                                        <Column field="price" body={priceBodyTemplate} header="Price"></Column>
+                                        <Column field="durationTime" body={durationBodyTemplate} header="Duration Time"></Column>
+                                    </DataTable>
                                 </div>
+                            ) : (
+                                "No service Found"
+                            )}
+                        </AccordionTab>
 
-                                <DataTable value={bookings}>
-                                    <Column body={bookingDateTemplate} header="Booking Date"></Column>
-                                    <Column body={startTime} header="Start Time"></Column>
-                                    <Column body={statusbodyTemplate} header="Status"></Column>
-                                    <Column body={userBodyTemplate} header="Provider"></Column>
-                                    <Column field="duration" header="Duration"></Column>
-                                </DataTable>
-                            </>
-                        ) : (
-                            "No Bookings Found"
-                        )}
-                    </AccordionTab>
-                    <AccordionTab header="Documents">
-                        {info?.documents ? (
-                            <>
-                                <div className="flex">
-                                    <h3>Documents </h3>
-                                    <div className="ml-4">
-                                        <Button
-                                            type="button"
-                                            className="p-button-raised p-button-rounded  p-button-outlined p-button-info"
-                                            onClick={() => {
-                                                verifyBusinessProvider("VERIFIED");
-                                            }}
-                                        >
-                                            Approve
-                                        </Button>
+                        <AccordionTab header="Bookings">
+                            {bookings?.length ? (
+                                <>
+                                    <div className="flex">
+                                        <div>
+                                            <label>From Date</label>
+                                            <Calendar name="bookingsFrom" value={filterdate?.bookingsFrom} onChange={handleChange("bookingsFrom")} dateTemplate={dateTemplate} />
+                                        </div>
+                                        <div>
+                                            <label>To Date</label>
+                                            <Calendar name="bookingsTo" value={filterdate?.bookingsTo} onChange={handleChange("bookingsTo")} dateTemplate={dateTemplate} />
+                                        </div>
                                     </div>
+
+                                    <DataTable value={bookings}>
+                                        <Column body={bookingDateTemplate} header="Booking Date"></Column>
+                                        <Column body={startTime} header="Start Time"></Column>
+                                        <Column body={statusbodyTemplate} header="Status"></Column>
+                                        <Column body={userBodyTemplate} header="Provider"></Column>
+                                        <Column field="duration" header="Duration"></Column>
+                                    </DataTable>
+                                </>
+                            ) : (
+                                "No Bookings Found"
+                            )}
+                        </AccordionTab>
+                        <AccordionTab header="Documents">
+                            {info?.documents ? (
+                                <>
+                                    <div className="flex">
+                                        <h3>Documents </h3>
+                                        <div className="ml-4">
+                                            <Button
+                                                type="button"
+                                                className="p-button-raised p-button-rounded  p-button-outlined p-button-info"
+                                                onClick={() => {
+                                                    verifyBusinessProvider("VERIFIED");
+                                                }}
+                                            >
+                                                Approve
+                                            </Button>
+                                        </div>
+                                        <div>
+                                            <Button
+                                                type="button"
+                                                className="p-button-raised p-button-rounded  p-button-outlined p-button-danger ml-2"
+                                                onClick={() => {
+                                                    verifyBusinessProvider("REJECTED");
+                                                    getAllProfile();
+                                                }}
+                                            >
+                                                Reject
+                                            </Button>
+                                        </div>
+                                    </div>
+
                                     <div>
-                                        <Button
-                                            type="button"
-                                            className="p-button-raised p-button-rounded  p-button-outlined p-button-danger ml-2"
-                                            onClick={() => {
-                                                verifyBusinessProvider("REJECTED");
-                                                getAllProfile();
-                                            }}
-                                        >
-                                            Reject
-                                        </Button>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div className=" card my-4 text-center ">
-                                        <div className="flex justify-content-around">
-                                            <div>
-                                                <div>Front</div>
-                                                {info?.documents?.front ? <Image src={Constants?.BASE_URL + info?.documents?.front} alt="galleria" width="150px" preview /> : null}
-                                            </div>
-                                            <div>
-                                                <div>Back</div>
-                                                {info?.documents?.back ? <Image src={Constants?.BASE_URL + info?.documents?.back} alt="galleria" width="150px" preview /> : null}
-                                            </div>
-                                            <div>
-                                                <div>Selfie</div>
-                                                {info?.documents?.selfie ? <Image src={Constants?.BASE_URL + info?.documents?.selfie} alt="galleria" width="150px" preview /> : null}
+                                        <div className=" card my-4 text-center ">
+                                            <div className="flex justify-content-around">
+                                                <div>
+                                                    <div>Front</div>
+                                                    {info?.documents?.front ? <Image src={Constants?.BASE_URL + info?.documents?.front} alt="galleria" width="150px" preview /> : null}
+                                                </div>
+                                                <div>
+                                                    <div>Back</div>
+                                                    {info?.documents?.back ? <Image src={Constants?.BASE_URL + info?.documents?.back} alt="galleria" width="150px" preview /> : null}
+                                                </div>
+                                                <div>
+                                                    <div>Selfie</div>
+                                                    {info?.documents?.selfie ? <Image src={Constants?.BASE_URL + info?.documents?.selfie} alt="galleria" width="150px" preview /> : null}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </>
-                        ) : (
-                            "No Documents Found"
-                        )}
-                    </AccordionTab>
-                </Accordion>
+                                </>
+                            ) : (
+                                "No Documents Found"
+                            )}
+                        </AccordionTab>
+                    </Accordion>
+                </div>
             </div>
             <div className="col-12 md:col-4">
                 <div className="card">
@@ -231,7 +235,7 @@ const ProviderInfo = () => {
                             <i className="pi pi-tag mr-2" />
                             <span className="font-semibold">business</span>
                         </div>
-                        <span className={`customer-badge status-${info?.business?.isVerified === "VERIFIED" ? "qualified" : info?.business?.isVerified === "SUBMITTED" ? "proposal" : info?.business?.isVerified === "NOT_VERIFIED" ? "NEW" : "unqualified"}`}> {info?.business?.isVerified}</span>
+                        <span className={`customer-badge status-${info?.business?.isVerified === "VERIFIED" ? "qualified" : info?.business?.isVerified === "SUBMITTED" ? "proposal" : info?.business?.isVerified === "NOT_VERIFIED" ? "new" : "unqualified"}`}> {info?.business?.isVerified}</span>
                     </div>
                     <div className="text-center">
                         <img src={info?.business?.image ? Constants?.BASE_URL + info?.business?.image : business} alt="" className="w-9 shadow-2 my-3 mx-0" />
@@ -241,11 +245,7 @@ const ProviderInfo = () => {
                     </div>
                     <div className="mt-4">
                         <Accordion multiple>
-                            <AccordionTab header="About Us">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not
-                                only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
-                                PageMaker including versions of Lorem Ipsum.
-                            </AccordionTab>
+                            <AccordionTab header="About Us">{info?.business?.about && <div>{info?.business?.about}</div>}</AccordionTab>
                             <AccordionTab header="Working Hours">
                                 {info?.business?.timings?.map((timing, i) => {
                                     console.log(timing?.isClosed);
