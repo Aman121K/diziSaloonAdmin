@@ -18,10 +18,11 @@ import { Image } from "primereact/image";
 import { convertTime24to12 } from "../utils";
 import { Calendar } from "primereact/calendar";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import MapContainer from "./MapContainer";
 
 const ProviderInfo = () => {
+    const location = useLocation();
     const [info, setInfo] = useState({});
     const [bookings, setBookings] = useState();
     const [filterdate, setFilterDate] = useState({
@@ -118,13 +119,12 @@ const ProviderInfo = () => {
         return <span className={`product-badge status-${rowData.status === "CONFIRMED" ? "instock" : "outofstock"}`}>{rowData.status}</span>;
     };
     const message = useRef();
-    console.log(info);
     return (
         <div className="grid">
             <div className="col-12 md:col-8 mx-auto ">
                 <div className="">
                     <Toast ref={toast} />
-                    <MapContainer coordinates={info?.business?.location?.coordinates} />
+                    <MapContainer coordinates={location?.state?.booking?.coordinates || info?.business?.location?.coordinates} />
                     <Accordion multiple className="mt-3">
                         <AccordionTab header="Services">
                             {info?.services?.length > 0 ? (
@@ -248,7 +248,6 @@ const ProviderInfo = () => {
                             <AccordionTab header="About Us">{info?.business?.about && <div>{info?.business?.about}</div>}</AccordionTab>
                             <AccordionTab header="Working Hours">
                                 {info?.business?.timings?.map((timing, i) => {
-                                    console.log(timing?.isClosed);
                                     return (
                                         <div className="col-6 flex">
                                             <div className="w-25">{weekDays[timing.weekDay]}</div>

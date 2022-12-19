@@ -75,7 +75,7 @@ export const PrivateRoutes = [
         component: UserView,
     },
     {
-        path: "/booking-detail/:id",
+        path: "/bookingDetail/:id",
         name: "BookingDetail",
         component: BookingDetails,
     },

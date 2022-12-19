@@ -48,7 +48,6 @@ const Dashboard = (props) => {
     let { bookingsFrom, bookingsTo } = filterdate;
     bookingsFrom = moment(new Date(bookingsFrom)).format("DD-MM-YYYY");
     bookingsTo = moment(new Date(bookingsTo)).format("DD-MM-YYYY");
-    console.log(bookingsFrom, bookingsTo);
 
     const applyLightTheme = () => {
         const lineOptions = {
@@ -135,7 +134,6 @@ const Dashboard = (props) => {
         postData(Constants.END_POINT.ALL_BOOKINGS)
             .then((res) => {
                 setBooking(res.data);
-                console.log(res);
             })
             .catch((err) => console.log(err));
     };
@@ -144,7 +142,6 @@ const Dashboard = (props) => {
         postData(Constants.END_POINT.ALL_BOOKINGS, { bookingsFrom: bookingsFrom, bookingsTo: bookingsTo })
             .then((res) => {
                 setBooking(res.data);
-                console.log(res);
             })
             .catch((err) => console.log(err));
     };
@@ -158,7 +155,6 @@ const Dashboard = (props) => {
     const dateTemplate = (date) => {
         return date.day;
     };
-    console.log(booking);
 
     const bookingDateTemplate = (rowData) => {
         return moment(rowData?.bookingDate).format("DD-MM-YYYY");
@@ -170,7 +166,18 @@ const Dashboard = (props) => {
         return <span className={`product-badge status-${rowData.status === "CONFIRMED" ? "instock" : "outofstock"}`}>{rowData.status}</span>;
     };
     const userBodyTemplate = (rowData) => {
-        return <Link to={`/providerInfo/${rowData?._id}`}>{rowData?.provider ? rowData?.provider?.firstName : "-"}</Link>;
+        return (
+            <Link
+                to={{
+                    pathname: `/providerInfo/${rowData?._id}`,
+                    state: {
+                        booking: rowData?.business?.location,
+                    },
+                }}
+            >
+                {rowData?.provider ? rowData?.provider?.firstName : "-"}
+            </Link>
+        );
     };
     const userBodyTemplate1 = (rowData) => {
         return rowData?.user ? rowData?.user?.firstName : rowData?.client?.firstName + "*";
@@ -180,21 +187,18 @@ const Dashboard = (props) => {
         setFilterDate({ ...filterdate, [name]: value });
     };
     const bookingTemplate = (rowData) => {
-        console.log(rowData?.business?.businessName);
         return (
             <Link
                 to={{
-                    pathname: `/booking-detail/${rowData?._id}`,
+                    pathname: `/bookingDetail/${rowData?._id}`,
                     state: {
-                        booking: rowData?.bussiness,
+                        booking: rowData?.business?.location,
+                        user: rowData?.address?.location,
                     },
                 }}
             >
-                Business
+                {rowData?.business?.businessName}
             </Link>
-            // <Link to={pathname} state>
-            //     {rowData?.provider ? rowData?.provider?.firstName : "-"}
-            // </Link>
         );
     };
 
@@ -280,14 +284,14 @@ const Dashboard = (props) => {
                 <div className="card">
                     <h5>Recent Bookings</h5>
                     <>
-                        <div className="flex">
+                        <div className="flex mb-3">
                             <div>
-                                <label>From Date</label>
-                                <Calendar value={filterdate?.bookingsFrom} onChange={handleChange("bookingsFrom")} name="bookingsFrom" dateTemplate={dateTemplate} />
+                                <label className="h6">From Date</label>
+                                <Calendar className="mx-2" placeholder="MM/DD/YYYY" value={filterdate?.bookingsFrom} onChange={handleChange("bookingsFrom")} name="bookingsFrom" dateTemplate={dateTemplate} />
                             </div>
                             <div>
-                                <label>To Date</label>
-                                <Calendar value={filterdate?.bookingsTo} name="bookingsTo" onChange={handleChange("bookingsTo")} dateTemplate={dateTemplate} />
+                                <label className="h6">To Date</label>
+                                <Calendar className="mx-2" placeholder="MM/DD/YYYY" value={filterdate?.bookingsTo} name="bookingsTo" onChange={handleChange("bookingsTo")} dateTemplate={dateTemplate} />
                             </div>
                         </div>
 

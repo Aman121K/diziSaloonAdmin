@@ -4,10 +4,10 @@ import { useLocation } from "react-router-dom";
 
 const BookingDetails = () => {
     const location = useLocation();
-    console.log(location);
+    console.log("location::", location);
     return (
         <div>
-            <MapContainer />
+            <MapContainer coordinates={location?.state?.booking?.coordinates} coordinates1={location?.state?.user?.coordinates} />
         </div>
     );
 };

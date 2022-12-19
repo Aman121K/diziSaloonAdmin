@@ -7,6 +7,7 @@ import { Column } from "primereact/column";
 import moment from "moment";
 import { convertTime24to12 } from "../utils";
 import { Calendar } from "primereact/calendar";
+import MapContainer from "../pages/MapContainer";
 
 const UserView = () => {
     const { id } = useParams();
@@ -83,32 +84,35 @@ const UserView = () => {
         <div className="grid">
             <div className="col-12 md:col-8 mx-auto">
                 <div className="card ">
-                    <h3>Bookings </h3>
+                    <MapContainer coordinates={user?.business?.location?.coordinates} />
+                    <div>
+                        <h3>Bookings </h3>
 
-                    {bookings?.length ? (
-                        <>
-                            <div className="flex">
-                                <div>
-                                    <label>From Date</label>
-                                    <Calendar name="bookingsFrom" value={datePicker?.bookingsFrom} onChange={handleChange("bookingsFrom")} dateTemplate={dateTemplate} />
+                        {bookings?.length ? (
+                            <>
+                                <div className="flex">
+                                    <div>
+                                        <label>From Date</label>
+                                        <Calendar name="bookingsFrom" value={datePicker?.bookingsFrom} onChange={handleChange("bookingsFrom")} dateTemplate={dateTemplate} />
+                                    </div>
+                                    <div>
+                                        <label>To Date</label>
+                                        <Calendar name="bookingsTo" value={datePicker?.bookingsTo} onChange={handleChange("bookingsTo")} dateTemplate={dateTemplate} />
+                                    </div>
                                 </div>
-                                <div>
-                                    <label>To Date</label>
-                                    <Calendar name="bookingsTo" value={datePicker?.bookingsTo} onChange={handleChange("bookingsTo")} dateTemplate={dateTemplate} />
-                                </div>
-                            </div>
 
-                            <DataTable value={bookings}>
-                                <Column body={bookingDateTemplate} header="Booking Date"></Column>
-                                <Column body={startTime} header="Start Time"></Column>
-                                <Column body={statusbodyTemplate} header="Status"></Column>
-                                <Column body={userBodyTemplate} header="User"></Column>
-                                <Column field="duration" header="Duration"></Column>
-                            </DataTable>
-                        </>
-                    ) : (
-                        "No Bookings Found"
-                    )}
+                                <DataTable value={bookings}>
+                                    <Column body={bookingDateTemplate} header="Booking Date"></Column>
+                                    <Column body={startTime} header="Start Time"></Column>
+                                    <Column body={statusbodyTemplate} header="Status"></Column>
+                                    <Column body={userBodyTemplate} header="User"></Column>
+                                    <Column field="duration" header="Duration"></Column>
+                                </DataTable>
+                            </>
+                        ) : (
+                            "No Bookings Found"
+                        )}
+                    </div>
                 </div>
             </div>
             <div className="col-12 md:col-4">
