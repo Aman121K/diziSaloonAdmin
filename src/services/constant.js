@@ -13,6 +13,7 @@ export default class Constants {
         CHANGE_PASSWORD: "api/admin/change-password",
         FORGOT_PASSWORD: "api/admin/forgot-password",
         RESET_PASSWORD: "api/admin/change-forgot-password",
+        UPDATE_CATEGORY: "api/admin/update-category/",
 
         // Providers
 
