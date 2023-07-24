@@ -72,10 +72,10 @@ const Login = () => {
                         <div className="text-center">
                             <img src="assets/layout/images/squareLogo.png" alt="logo" width="15%" />
                             <h2>
-                                INSTA<span style={{ color: "#ffdb4d" }}>JAMAICA</span>
+                                Dizi<span style={{ color: "#ffdb4d" }}>Saloon</span>
                             </h2>
                         </div>
-                        <h3>Admin Login</h3>
+                        <h3>Admin Login of Dizi Saloon</h3>
                         <Messages ref={message} />
                         <form onSubmit={handleSubmit}>
                             <div className="field">

@@ -26,7 +26,7 @@ export const AppTopbar = (props) => {
             }, 400);
         });
     };
-    const reject = () => {};
+    const reject = () => { };
 
     const toggleMenu = (event) => {
         menu.current.toggle(event);
@@ -62,7 +62,7 @@ export const AppTopbar = (props) => {
                 <img src={props.layoutColorMode === "light" ? "assets/layout/images/squareLogo.png" : "assets/layout/images/squareLogo.png"} alt="logo" />
                 <span>
                     {" "}
-                    INSTA<span style={{ color: "#ffdb4d" }}>JAMAICA</span>
+                    Dizi<span style={{ color: "#ffdb4d" }}>Saloon</span>
                 </span>
             </Link>
 

@@ -7,7 +7,7 @@ export const AppFooter = (props) => {
 
             <span className="font-medium">
                 {" "}
-                INSTA<span style={{ color: "#ffdb4d" }}>JAMAICA</span>
+                Dizi<span style={{ color: "#ffdb4d" }}>Saloon</span>
             </span>
         </div>
     );
