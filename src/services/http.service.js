@@ -2,15 +2,16 @@ import axios from "axios";
 import Constants from "./constant";
 import { isAuthenticated } from "./auth";
 
-export const getData = (url) => {
+export const getData = (url,token) => {
     return axios
         .get(Constants.BASE_URL + url.toString(), {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${isAuthenticated()}`,
+                Authorization:token,
             },
         })
         .then((response) => {
+            console.log("All user data >>",response)
             if (response.status === 401) {
                 localStorage.removeItem("jwt");
             }
@@ -25,14 +26,15 @@ export const getData = (url) => {
         });
 };
 export const postData = (url, body) => {
+    console.log("body>>",url,body)
     return axios
         .post(Constants.BASE_URL + url.toString(), body, {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${isAuthenticated()}`,
             },
         })
         .then((response) => {
+            console.log("login resposne>>",response)
             return response.data;
         })
         .catch((error) => {
@@ -40,12 +42,13 @@ export const postData = (url, body) => {
             return error;
         });
 };
-export const postData1 = (url, body) => {
+export const postData1 = (url, body,token) => {
+    console.log("all records>>",url,body,token)
     return axios
         .post(Constants.BASE_URL + url.toString(), body, {
             headers: {
                 "content-type": "multipart/form-data",
-                Authorization: `Bearer ${isAuthenticated()}`,
+                Authorization: token,
             },
         })
         .then((response) => {

@@ -6,7 +6,7 @@ import upload from "../assets/demo/flags/folder.png";
 import { postData1, putData1 } from "../services/http.service";
 import Constants from "../services/constant";
 
-const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, category, id, setId }) => {
+const CreateAndEditStyle = ({ openModal, setOpenModal, getAllCategory, category, id, setId }) => {
     const isEdit = id;
     const [token,setTokem]=React.useState();
     useLayoutEffect(()=>{
@@ -28,11 +28,16 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
             }));
         } else {
             setForm((prevState) => ({
-                ...prevState
+                ...prevState,
+                categoryName: "",
+                categoryImage: "",
             }));
         }
     }, []);
-    const [form, setForm] = useState({});
+    const [form, setForm] = useState({
+        categoryName: "",
+        categoryImage: "",
+    });
     const [errors, setErrors] = useState({});
     const [img, setImg] = useState();
 
@@ -63,7 +68,7 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
         formData.append("title", form.title);
         formData.append("description", form.description);
         formData.append("coverImage", form.coverImage);
-        return postData1(Constants.END_POINT.CREATE_CATEGORY, formData,token)
+        return postData1(Constants.END_POINT.CREATE_STYLES, formData,token)
             .then((res) => {
                 // if (res.success) {
                     getAllCategory();
@@ -106,7 +111,7 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
     };
     return (
         <Dialog
-            header={isEdit ? "Edit  Category" : "Add Category"}
+            header={isEdit ? "Edit  Styles" : "Add Styles"}
             visible={openModal}
             style={{ width: "30vw" }}
             modal
@@ -119,7 +124,7 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
             <div>
                 <h6> Name</h6>
                 <InputText id="username" type="text" style={{ width: "100%" }} value={form?.title} onChange={(e) => handleFields("title", e.target.value)} />
-                {errors?.categoryName && (
+                {errors?.title && (
                     <div
                         style={{
                             color: "red",
@@ -128,7 +133,7 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
                             marginTop: "10px",
                         }}
                     >
-                        {errors?.categoryName}
+                        {errors?.title}
                     </div>
                 )}
             </div>
@@ -170,7 +175,7 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
                 </span>
                 <span className="p-label"></span>
             </div>
-            {errors?.categoryImage && (
+            {errors?.coverImage && (
                 <div
                     style={{
                         color: "red",
@@ -179,11 +184,11 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
                         marginTop: "10px",
                     }}
                 >
-                    {errors?.categoryImage}
+                    {errors?.coverImage}
                 </div>
             )}
         </Dialog>
     );
 };
 
-export default CreateAndEditCategory;
+export default CreateAndEditStyle;

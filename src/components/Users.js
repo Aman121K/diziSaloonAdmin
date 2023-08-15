@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { getData } from "../services/http.service";
@@ -6,11 +6,19 @@ import Constants from "../services/constant";
 import profile from "../assets/demo/flags/profile.png";
 import { Button } from "primereact/button";
 import { Link } from "react-router-dom";
-
 const Users = () => {
-    useEffect(() => {
-        getAllUsers();
-    }, []);
+    useLayoutEffect(()=>{
+        getLocalData()
+    },[])
+    const getLocalData=async()=>{
+        const data=await localStorage.getItem('token');
+        if(data){
+            getAllUsers(data)
+        }
+    }
+    // useEffect(() => {
+    //     getAllUsers();
+    // }, []);
     const getAllUsers = () => {
         getData(Constants.END_POINT.USERS)
             .then((res) => {
@@ -59,12 +67,12 @@ const Users = () => {
                     value={users}
                     paginator
                     rows={5}
-                    // expandedRows={expandedRows}
-                    // onRowToggle={(e) => setExpandedRows(e.data)}
-                    // responsiveLayout="scroll"
-                    // rowExpansionTemplate={rowExpansionTemplate}
-                    // dataKey="id"
-                    // header={header}
+                // expandedRows={expandedRows}
+                // onRowToggle={(e) => setExpandedRows(e.data)}
+                // responsiveLayout="scroll"
+                // rowExpansionTemplate={rowExpansionTemplate}
+                // dataKey="id"
+                // header={header}
                 >
                     {/* <Column expander style={{ width: "3em" }} /> */}
                     <Column field="firstName" header="Name" sortable />

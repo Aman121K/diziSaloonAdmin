@@ -1,10 +1,13 @@
 export default class Constants {
     // static BASE_URL = "http://localhost:1001/";
-    static BASE_URL = "https://instajamaica-api.appdeft.biz/";
+    static BASE_URL = "http://43.204.144.93:5001/api/v1/";
     static END_POINT = {
-        SIGIN: "api/admin/login",
-        CREATE_CATEGORY: "api/admin/create-category",
-        GET_ALL_CATEGORIES: "api/admin/categories",
+        SIGIN: "login",
+        CREATE_CATEGORY: "admin/category",
+        GET_ALL_CATEGORIES: "get-categories",
+        CREATE_STYLES:'admin/styles',
+        CREATE_ADS:'admin/ads',
+        CREATE_ARTICAL:'admin/articles',
         ENABLE_DISABLE_CATEGORY: "api/admin/enable-disable-category/",
         USERS: "api/admin/users",
         BLOCK_UNBLOCK_USER: "api/admin/enable-disable-user/",

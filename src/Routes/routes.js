@@ -11,6 +11,9 @@ import Reports from "../components/Reports";
 import Feedback from "../components/Feedback";
 import UserView from "../components/UserView";
 import BookingDetails from "../pages/BookingDetails";
+import Articals from "../components/Articals";
+import Ads from "../components/Ads";
+import Styles from "../components/Styles";
 
 export const PrivateRoutes = [
     {
@@ -22,6 +25,21 @@ export const PrivateRoutes = [
         path: "/categories",
         name: "Categories",
         component: Categories,
+    },
+    {
+        path: "/articals",
+        name: "articals",
+        component: Articals,
+    },
+    {
+        path: "/ads",
+        name: "ads",
+        component: Ads,
+    },
+    {
+        path: "/styles",
+        name: "styles",
+        component: Styles,
     },
     {
         path: "/users",

@@ -6,16 +6,16 @@ import upload from "../assets/demo/flags/folder.png";
 import { postData1, putData1 } from "../services/http.service";
 import Constants from "../services/constant";
 
-const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, category, id, setId }) => {
+const CreateAndEditAds = ({ openModal, setOpenModal, getAllCategory, category, id, setId }) => {
     const isEdit = id;
-    const [token,setTokem]=React.useState();
-    useLayoutEffect(()=>{
+    const [token, setTokem] = React.useState();
+    useLayoutEffect(() => {
         getLocalData()
-    },[])
-    const  getLocalData=async()=>{
-        let newToken= await localStorage.getItem('token');
-        console.log("new token>>",newToken)
-        if(newToken){
+    }, [])
+    const getLocalData = async () => {
+        let newToken = await localStorage.getItem('token');
+        console.log("new token>>", newToken)
+        if (newToken) {
             setTokem(newToken)
         }
     }
@@ -28,11 +28,16 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
             }));
         } else {
             setForm((prevState) => ({
-                ...prevState
+                ...prevState,
+                categoryName: "",
+                categoryImage: "",
             }));
         }
     }, []);
-    const [form, setForm] = useState({});
+    const [form, setForm] = useState({
+        categoryName: "",
+        categoryImage: "",
+    });
     const [errors, setErrors] = useState({});
     const [img, setImg] = useState();
 
@@ -63,11 +68,11 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
         formData.append("title", form.title);
         formData.append("description", form.description);
         formData.append("coverImage", form.coverImage);
-        return postData1(Constants.END_POINT.CREATE_CATEGORY, formData,token)
+        return postData1(Constants.END_POINT.CREATE_ADS, formData, token)
             .then((res) => {
                 // if (res.success) {
-                    getAllCategory();
-                    setOpenModal(false);
+                getAllCategory();
+                setOpenModal(false);
                 // }
             })
             .catch((err) => {
@@ -186,4 +191,4 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
     );
 };
 
-export default CreateAndEditCategory;
+export default CreateAndEditAds;

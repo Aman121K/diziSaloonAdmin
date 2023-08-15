@@ -3,9 +3,10 @@ import { PrivateRoutes } from "./routes";
 import { Route, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../services/auth";
 export default function ProtectedRoute() {
+    console.log("Auth is>>")
     const getAuthRoutes = (routes) => {
         return routes.map((prop, key) => {
-            return isAuthenticated() ? <Route path={prop.path} key={prop.path} component={prop.component} /> : <Redirect to="/" />;
+            return  <Route path={prop.path} key={prop.path} component={prop.component} />;
         });
     };
 

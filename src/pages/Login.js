@@ -37,25 +37,18 @@ const Login = () => {
         message.current.show({ severity: "error", content: msg });
     };
     const handleSubmit = (e) => {
+        console.log("eeeeeevikas....", form)
         e.preventDefault();
-        if (!form.email || !form.password) {
-            return;
-        }
         setLoading(true);
         postData(Constants.END_POINT.SIGIN, form)
             .then((res) => {
+                localStorage.setItem('token', res.token)
                 setLoading(false);
-                if (res.success) {
-                    authenticate(res, () => {
-                        if (isAuthenticated()) {
-                            history.push("/dashboard");
-                        }
-                        if (!isAuthenticated) {
-                            history.push("/login");
-                        }
-                    });
+                if (res.status === '200') {
+                    history.push("/dashboard");
                 } else {
                     addErrorMessage(res.message);
+                    history.push("/login");
                 }
             })
             .catch((error) => {
@@ -84,7 +77,7 @@ const Login = () => {
                                     id="email"
                                     type="text"
                                     onChange={(e) => {
-                                        setField("email", e.target.value);
+                                        setField("phone", e.target.value);
                                     }}
                                 />
                             </div>
@@ -92,7 +85,7 @@ const Login = () => {
                                 <label htmlFor="password">Password</label>
                                 <Password
                                     onChange={(e) => {
-                                        setField("password", e.target.value);
+                                        setField("pin", e.target.value);
                                     }}
                                     toggleMask
                                     feedback={false}

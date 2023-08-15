@@ -5,8 +5,9 @@ import { InputText } from "primereact/inputtext";
 import upload from "../assets/demo/flags/folder.png";
 import { postData1, putData1 } from "../services/http.service";
 import Constants from "../services/constant";
+import { Token } from "prismjs";
 
-const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, category, id, setId }) => {
+const CreateAndEditArtical = ({ openModal, setOpenModal, getAllCategory, category, id, setId }) => {
     const isEdit = id;
     const [token,setTokem]=React.useState();
     useLayoutEffect(()=>{
@@ -28,7 +29,7 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
             }));
         } else {
             setForm((prevState) => ({
-                ...prevState
+                ...prevState,
             }));
         }
     }, []);
@@ -51,24 +52,25 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
     const validateForm = () => {
         const newErrors = {};
         if (form.categoryName === "") {
-            newErrors.categoryName = "Category name is required";
+            newErrors.categoryName = "Artical Title is required";
         }
         if (!form.categoryImage) {
-            newErrors.categoryImage = "Please upload Image";
+            newErrors.categoryImage = "Artical description is required";
         }
         return newErrors;
     };
     const createCategory = () => {
+        console.log("form is>>",form)
         const formData = new FormData();
-        formData.append("title", form.title);
+        formData.append("title", form.categoryName);
         formData.append("description", form.description);
         formData.append("coverImage", form.coverImage);
-        return postData1(Constants.END_POINT.CREATE_CATEGORY, formData,token)
+        return postData1(Constants.END_POINT.CREATE_ARTICAL, formData,token)
             .then((res) => {
-                // if (res.success) {
+                if (res.success) {
                     getAllCategory();
                     setOpenModal(false);
-                // }
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -90,8 +92,8 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
 
     const handleSave = (e) => {
         e.preventDefault();
-        const formError = validateForm();
         createCategory()
+        // const formError = validateForm();
         // if (Object.keys(formError).length > 0) {
         //     setErrors(formError);
         // } else {
@@ -186,4 +188,4 @@ const CreateAndEditCategory = ({ openModal, setOpenModal, getAllCategory, catego
     );
 };
 
-export default CreateAndEditCategory;
+export default CreateAndEditArtical;
