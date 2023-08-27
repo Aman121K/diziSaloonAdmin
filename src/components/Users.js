@@ -6,15 +6,16 @@ import Constants from "../services/constant";
 import profile from "../assets/demo/flags/profile.png";
 import { Button } from "primereact/button";
 import { Link } from "react-router-dom";
+import moment from 'moment';
 const Users = () => {
-    useLayoutEffect(()=>{
+    useLayoutEffect(() => {
         getLocalData()
-    },[])
-    const getLocalData=async()=>{
-        const data=await localStorage.getItem('token');
-        if(data){
-            getAllUsers(data)
-        }
+    }, [])
+    const getLocalData = async () => {
+        // const data=await localStorage.getItem('token');
+        // if(data){
+        getAllUsers()
+        // }
     }
     // useEffect(() => {
     //     getAllUsers();
@@ -22,7 +23,8 @@ const Users = () => {
     const getAllUsers = () => {
         getData(Constants.END_POINT.USERS)
             .then((res) => {
-                if (res.success) {
+                console.log("response All users >>", res)
+                if (res.data) {
                     setUsers(res.data);
                 }
             })
@@ -75,10 +77,15 @@ const Users = () => {
                 // header={header}
                 >
                     {/* <Column expander style={{ width: "3em" }} /> */}
-                    <Column field="firstName" header="Name" sortable />
+                    <Column field="name" header="Name" sortable />
                     <Column field="email" header="Email" sortable />
-                    <Column field="mobile" header="Mobile" sortable />
+                    <Column field="phone" header="Mobile" sortable />
                     <Column header="Image" body={imageBodyTemplate} />
+                    <Column
+                                field="createdAt"
+                                header="CreatedDate"
+                                body={(rowData) => moment(rowData.createdAt).format('YYYY-MM-DD')}
+                            />
                     <Column field="isOnline" header="Status" sortable body={statusBodyTemplate2} />
                     <Column field="block" header="Action" body={ActionBodyTemplate} />
                 </DataTable>

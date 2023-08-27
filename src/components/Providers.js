@@ -6,7 +6,7 @@ import Constants from "../services/constant";
 import profile from "../assets/demo/flags/profile.png";
 import { Button } from "primereact/button";
 import { Link } from "react-router-dom";
-
+import moment from 'moment';
 const Provider = () => {
     useEffect(() => {
         getAllUsers();
@@ -55,15 +55,24 @@ const Provider = () => {
                     value={users}
                     paginator
                     rows={5}
-                    // expandedRows={expandedRows}
-                    // onRowToggle={(e) => setExpandedRows(e.data)}
-                    // responsiveLayout="scroll"
-                    // rowExpansionTemplate={rowExpansionTemplate}
-                    // dataKey="id"
-                    // header={header}
+                // expandedRows={expandedRows}
+                // onRowToggle={(e) => setExpandedRows(e.data)}
+                // responsiveLayout="scroll"
+                // rowExpansionTemplate={rowExpansionTemplate}
+                // dataKey="id"
+                // header={header}
                 >
                     {/* <Column expander style={{ width: "3em" }} /> */}
-                    <Column field="firstName" header="Name" sortable style={{ width: "30px" }} />
+                    <Column field="salonName" header="Name" sortable style={{ width: "30px" }} />
+                    <Column field="salonOwnerName" header="Owner Name" sortable style={{ width: "30px" }} />
+                    <Column field="email" header="Email" sortable style={{ width: "30px" }} />
+                    <Column field="phone" header="Mobile" sortable style={{ width: "30px" }} />
+                    <Column
+                        field="createdAt"
+                        header="CreatedDate"
+                        style={{ width: "30px" }}
+                        body={(rowData) => moment(rowData.createdAt).format('YYYY-MM-DD')}
+                    />
                     <Column field="isOnline" header="Status" sortable body={statusBodyTemplate2} style={{ width: "30px" }} />
                     <Column field="block" header="Action" body={blockBodyTemplate} style={{ width: "40px" }} />
                 </DataTable>

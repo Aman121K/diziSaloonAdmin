@@ -15,7 +15,7 @@ const Articals = () => {
     }, []);
 
     const getAllCategory = () => {
-        getData(Constants.END_POINT.GET_ALL_CATEGORIES)
+        getData(Constants.END_POINT.GET_ALL_ARTICAL)
             .then((res) => {
                 setCategory(res.data);
             })

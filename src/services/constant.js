@@ -6,10 +6,13 @@ export default class Constants {
         CREATE_CATEGORY: "admin/category",
         GET_ALL_CATEGORIES: "get-categories",
         CREATE_STYLES:'admin/styles',
+        GET_ALL_STYLES:'get-styles',
         CREATE_ADS:'admin/ads',
+        GET_ALL_ADS:'get-ads',
         CREATE_ARTICAL:'admin/articles',
+        GET_ALL_ARTICAL:'get-articles',
         ENABLE_DISABLE_CATEGORY: "api/admin/enable-disable-category/",
-        USERS: "api/admin/users",
+        USERS: "get-all-users",
         BLOCK_UNBLOCK_USER: "api/admin/enable-disable-user/",
         GET_ADMIN_PROFILE: "api/admin/profile",
         UPDATE_ADMIN_PROFILE: "api/admin/update",
@@ -20,7 +23,7 @@ export default class Constants {
 
         // Providers
 
-        PROVIDERS: "api/admin/providers",
+        PROVIDERS: "get-all-salons",
         BLOCK_UNBLOCK_PROVIDER: "api/admin/enable-disable-provider/",
         GET_PROVIDER: "api/admin/provider/",
         VERIFY_BUSINESS_PROVIDER: "api/admin/verify-business/",
