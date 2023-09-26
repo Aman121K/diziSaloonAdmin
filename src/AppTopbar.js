@@ -62,7 +62,7 @@ export const AppTopbar = (props) => {
                 <img src={props.layoutColorMode === "light" ? "assets/layout/images/squareLogo.png" : "assets/layout/images/squareLogo.png"} alt="logo" />
                 <span>
                     {" "}
-                    Dizi<span style={{ color: "#ffdb4d" }}>Saloon</span>
+                    {/* Dizi<span style={{ color: "#ffdb4d" }}>Saloon</span> */}
                 </span>
             </Link>
 

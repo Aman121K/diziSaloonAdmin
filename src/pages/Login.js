@@ -7,7 +7,6 @@ import Constants from "../services/constant";
 import { authenticate, isAuthenticated } from "../services/auth";
 import { useHistory, Link } from "react-router-dom";
 import { Messages } from "primereact/messages";
-
 const Login = () => {
     useEffect(() => {
         document.documentElement.style.fontSize = 14 + "px";

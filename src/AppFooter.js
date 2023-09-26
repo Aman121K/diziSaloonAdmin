@@ -7,7 +7,7 @@ export const AppFooter = (props) => {
 
             <span className="font-medium">
                 {" "}
-                Dizi<span style={{ color: "#ffdb4d" }}>Saloon</span>
+                {/* Dizi<span style={{ color: "#ffdb4d" }}>Saloon</span> */}
             </span>
         </div>
     );

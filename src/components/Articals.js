@@ -8,6 +8,7 @@ import list from "../assets/demo/flags/list.png";
 import { Button } from "primereact/button";
 import CreateAndEditCategory from "../modals/CreateAndEditCategory";
 import CreateAndEditArtical from "../modals/CreateAndEditArtical";
+import moment from "moment";
 
 const Articals = () => {
     useEffect(() => {
@@ -17,6 +18,7 @@ const Articals = () => {
     const getAllCategory = () => {
         getData(Constants.END_POINT.GET_ALL_ARTICAL)
             .then((res) => {
+                console.log("all data on Artical page>>",res.data)
                 setCategory(res.data);
             })
             .catch((err) => console.log(err));
@@ -72,9 +74,18 @@ const Articals = () => {
                         </div>
 
                         <DataTable value={category} responsiveLayout="scroll" paginator rows={8}>
-                            <Column field="categoryName" header="Name" style={{ width: "35%" }}></Column>
-                            <Column header="Image" body={imageBodyTemplate} style={{ width: "35%" }} />
-                            <Column header="Action" body={actionTemplate} style={{ width: "25%" }} />
+                        <Column field="title" header="Name" style={{ width: "25%" }}></Column>
+                            {/* description */}
+                            <Column field="description" header="Description" style={{ width: "25%" }}></Column>
+                            <Column header="Image" body={imageBodyTemplate} style={{ width: "25%" }} />
+                            <Column
+                                field="createdAt"
+                                header="CreatedDate"
+                                style={{ width: "25%" }}
+                                body={(rowData) => moment(rowData.createdAt).format('YYYY-MM-DD')}
+                            />
+                            <Column header="Action" body={actionTemplate} style={{ width: "35%" }} />
+                           
                         </DataTable>
                         {openModal && <CreateAndEditArtical openModal={openModal} setOpenModal={setOpenModal} getAllCategory={getAllCategory} category={data} id={id} setId={setId} />}
                     </div>
